@@ -11,6 +11,7 @@ import br.jus.tst.esocialjt.dominio.ErroProcessamento;
 import br.jus.tst.esocialjt.dominio.Estado;
 import br.jus.tst.esocialjt.dominio.EventoTotalizador;
 import br.jus.tst.esocialjt.dominio.Lote;
+import br.jus.tst.esocialjt.evento.EventoRepository;
 import br.jus.tst.esocialjt.negocio.exception.ComunicacaoEsocialGovException;
 import br.jus.tst.esocialjt.ocorrencia.OcorrenciaServico;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 public class AtualizacaoProcessamentoServico {
@@ -49,6 +52,9 @@ public class AtualizacaoProcessamentoServico {
 
 	@Autowired
 	private OcorrenciaServico ocorrenciaServico;
+
+	@Autowired
+	private EventoRepository eventoRepository;
 
 	public List<Lote> atualizarTodosEmProcessamento() {
 		List<Lote> lotes = loteServico.criarConsulta().nosEstados(Estado.PROCESSAMENTO).buscar();
@@ -105,7 +111,15 @@ public class AtualizacaoProcessamentoServico {
 			for (RetornoEventoTotalizador eventoTot : listaRetornoEventoTotalizador) {
 				EventoTotalizador eventoTotalizador = new EventoTotalizador();
 				eventoTotalizador.setTipo(eventoTot.getTipo());
-				eventoTotalizador.setNrReciboArquivoBase(eventoTot.getNrReciboArquivoBase());
+				String nrReciboArquivoBase = eventoTot.getNrReciboArquivoBase();
+				if (isNotBlank(nrReciboArquivoBase) && existeEventoComRecibo(nrReciboArquivoBase)) {
+					eventoTotalizador.setNrReciboArquivoBase(eventoTot.getNrReciboArquivoBase());
+				} else {
+					LOGGER.warn("Totalizador salvo sem FK válida (análise manual necessária). " +
+							"recibo={}, tipo={}, perApuracao={}, cpf={}",
+							nrReciboArquivoBase, eventoTot.getTipo(), eventoTot.getPerApuracao(),
+							eventoTot.getCpfTrabalhador());
+				}
 				eventoTotalizador.setIndApuracao(eventoTot.getIndApuracao());
 				eventoTotalizador.setPerApuracao(eventoTot.getPerApuracao());
 				eventoTotalizador.setCpfTrabalhador(eventoTot.getCpfTrabalhador());
@@ -124,6 +138,10 @@ public class AtualizacaoProcessamentoServico {
 				}
 			}
 		}
+	}
+
+	public boolean existeEventoComRecibo(String nrRecibo) {
+		return eventoRepository.existsByNrRecibo(nrRecibo);
 	}
 
 	public void preencherProcessamentoEnviosEvento(Lote lote, RetornoProcessamento retornoProcessamento) {
