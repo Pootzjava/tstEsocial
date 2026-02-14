@@ -61,6 +61,11 @@ public class EnvioServico {
 		enviosEvento = gerarXmls(enviosEvento);
 		List<EnvioEvento> enviosEventosValidos = getEventosValidos(enviosEvento);
 		List<Lote> listaLotes = loteServico.gerarLotes(enviosEventosValidos);
+
+		if (!listaLotes.isEmpty()) {
+			LOGGER.info("Enviando " + listaLotes.size() + " lote(s) para o eSocial-GOV");
+		}
+
 		enviarLotes(listaLotes);
 
 		listaLotes.forEach(lote -> estadoServico.atualizarEstado(lote));

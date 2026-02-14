@@ -61,6 +61,11 @@
       "description": "Quantidade máxima de eventos por lote"
     },
     {
+      "name": "esocialjt.lotes-por-ciclo",
+      "type": "java.lang.Long",
+      "description": "Quantidade máxima de lotes a serem enviados por ciclo de execução"
+    },
+    {
       "name": "esocialjt.urlServicoConsultaProcessamento",
       "type": "java.lang.String",
       "description": "URL de servico de consulta de processamento quando for usar um servico remoto"

@@ -39,6 +39,9 @@ public class TarefaEnvioEventos implements Tarefa {
 	@Value("${esocialjt.limite-eventos-por-lote: 50}")
 	private Long LIMITE_EVENTOS_LOTE;
 	
+	@Value("${esocialjt.lotes-por-ciclo: 10}")
+	private Long lotesPorCiclo;
+
 	@Override
 	public boolean executar() {
 		List<Evento> eventos = selecionarEventosParaEnvio();	
@@ -62,7 +65,7 @@ public class TarefaEnvioEventos implements Tarefa {
 		
 		List<EventoDTO> eventosHabilitados = eventosEmFila.stream()
 			.filter(evento -> regrasFactory.getRegra(evento).habilitado(evento))
-			.limit(LIMITE_EVENTOS_LOTE)
+			.limit(LIMITE_EVENTOS_LOTE * lotesPorCiclo)
 			.collect(Collectors.toList());
 		
 		Long[] ids = eventosHabilitados

@@ -260,6 +260,9 @@ esocialjt.periodoAutoMilis=10000
 #Quantidade maxima de eventos por lote, entre 1 e 50
 esocialjt.limite-eventos-por-lote=50
 
+#Quantidade maxima de lotes a serem enviados por ciclo de execução
+esocialjt.lotes-por-ciclo=10
+
 #Preencha caso queira usar servicos externos, assim nao ha necessidade de ter um certificado local
 #Uma instalacao padrao fornece os servicos nos endpoints abaixo (aponte, por exemplo, para uma instalacao em homologacao)
 esocialjt.urlServicoConsultaProcessamento=http://localhost:8080/esocial-jt-service/lote/consulta/

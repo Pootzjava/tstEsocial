@@ -30,7 +30,7 @@ public class TarefaAtualizacaoProcessamento implements Tarefa {
 	public boolean executar() {
 		List<Lote> lotes = servico.atualizarTodosEmProcessamento();
 		log(lotes);
-		return lotes.isEmpty();
+		return true;
 	}
 
 	private void log(List<Lote> lotes) {
