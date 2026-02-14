@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -15,9 +14,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventoTotalizadorServico {
-
-	@Autowired
-	private EntityManager em;
 
 	@Autowired
 	EventoTotalizadorRepository eventoTotalizadorRepository;
@@ -37,8 +33,7 @@ public class EventoTotalizadorServico {
 
 	@Transactional
 	public void salvar(EventoTotalizador eventoTotalizador) {
-		em.flush();
-		em.persist(eventoTotalizador);
+		eventoTotalizadorRepository.save(eventoTotalizador);
 	}
 
 	public String getCompiladoEventoTotalizador(String tipo, String perApuracao) {
