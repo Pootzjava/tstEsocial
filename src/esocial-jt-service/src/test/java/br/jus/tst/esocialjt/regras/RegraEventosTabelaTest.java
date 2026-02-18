@@ -18,6 +18,7 @@ public class RegraEventosTabelaTest{
 	@Test
 	public void testarComposicaoDeRegras() {
 		assertThat(regra.regras()).extracting("class").containsOnly(
+				RegraNaoHaEventoTabelaEmProcessamento.class,
 				RegraEmpregadorCadastrado.class
 		);
 	}

@@ -65,10 +65,24 @@ public class TarefaEnvioEventos implements Tarefa {
 		
 		List<EventoDTO> eventosHabilitados = eventosEmFila.stream()
 			.filter(evento -> regrasFactory.getRegra(evento).habilitado(evento))
-			.limit(LIMITE_EVENTOS_LOTE * lotesPorCiclo)
 			.collect(Collectors.toList());
 		
-		Long[] ids = eventosHabilitados
+		// Verifica se algum evento é do grupo TABELA (ID = 1)
+		boolean temEventoTabela = eventosHabilitados.stream()
+			.anyMatch(evento -> evento.getCodGrupoEvento() != null && evento.getCodGrupoEvento().equals(1L));
+
+		// Se tem evento de tabela, limita a apenas 1 lote
+		long limite = temEventoTabela ? LIMITE_EVENTOS_LOTE : (LIMITE_EVENTOS_LOTE * lotesPorCiclo);
+
+		if(temEventoTabela) {
+			LOGGER.info("Eventos de TABELA detectados. Limitando envio a 1 lote");
+		}
+
+		List<EventoDTO> eventosParaEnviar = eventosHabilitados.stream()
+			.limit(limite)
+			.collect(Collectors.toList());
+
+		Long[] ids = eventosParaEnviar
 			.stream()
 			.map(EventoDTO::getId)
 			.toArray(Long[]::new);
