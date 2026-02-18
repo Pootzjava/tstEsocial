@@ -21,7 +21,7 @@ import br.jus.tst.esocialjt.evento.EventoDTO;
 public class ConsultaEvento {
 
 	private static final String QUERY_BASE = " SELECT e FROM Evento e ";
-	private static final String QUERY_BASE_DTO = " SELECT e.id as codEvento, e.tipoEvento.id as codTipoEvento FROM Evento e ";
+	private static final String QUERY_BASE_DTO = " SELECT e.id as codEvento, e.tipoEvento.id as codTipoEvento, e.tipoEvento.grupoTipoEvento.id as codGrupoEvento FROM Evento e ";
 	private static final String QUERY_COUNT = " SELECT COUNT(e) FROM Evento e ";
 
 	private EntityManager em;
@@ -49,6 +49,7 @@ public class ConsultaEvento {
 			EventoDTO eventoDTO = new EventoDTO();
 			eventoDTO.setId((Long) tupla.get("codEvento"));
 			eventoDTO.setCodTipoEvento((Long) tupla.get("codTipoEvento"));
+			eventoDTO.setCodGrupoEvento((Long) tupla.get("codGrupoEvento"));
 			listaEventoDTO.add(eventoDTO);
 		});
 		
