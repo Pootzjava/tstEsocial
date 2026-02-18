@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import br.jus.tst.esocialjt.dominio.GrupoTipoEvento;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +65,16 @@ public class TarefaEnvioEventos implements Tarefa {
 		}
 		
 		List<EventoDTO> eventosHabilitados = eventosEmFila.stream()
+			.limit(LIMITE_EVENTOS_LOTE * lotesPorCiclo)
 			.filter(evento -> regrasFactory.getRegra(evento).habilitado(evento))
 			.collect(Collectors.toList());
 		
-		// Verifica se algum evento é do grupo TABELA (ID = 1)
+		// Verifica se algum evento é do grupo TABELA
 		boolean temEventoTabela = eventosHabilitados.stream()
-			.anyMatch(evento -> evento.getCodGrupoEvento() != null && evento.getCodGrupoEvento().equals(1L));
+			.anyMatch(evento ->
+					evento.getCodGrupoEvento() != null &&
+							evento.getCodGrupoEvento().equals(GrupoTipoEvento.TABELA.getId())
+			);
 
 		// Se tem evento de tabela, limita a apenas 1 lote
 		long limite = temEventoTabela ? LIMITE_EVENTOS_LOTE : (LIMITE_EVENTOS_LOTE * lotesPorCiclo);
@@ -105,7 +110,7 @@ public class TarefaEnvioEventos implements Tarefa {
 			.map(EnvioEvento::getEvento)
 			.map(Evento::getEstado)
 			.collect(Collectors.groupingBy(Estado::getDescricao, Collectors.counting()));
-		String info = String.format("Eventos enviados: %s", resultado.toString());
+		String info = String.format("Eventos enviados: %s", resultado);
 		LOGGER.info(info);
 	}
 }
