@@ -5,8 +5,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.br.CNPJ;
-
 public class InfoCeletista {
 
 	@NotNull
@@ -20,7 +18,6 @@ public class InfoCeletista {
 	private Byte dtBase;
 	
 	@NotNull
-	@CNPJ
 	private String cnpjSindCategProf;
 	
 	@Valid

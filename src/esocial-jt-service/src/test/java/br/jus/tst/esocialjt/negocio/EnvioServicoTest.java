@@ -209,7 +209,7 @@ public class EnvioServicoTest {
 
 		Evento eventoA = getEvento();
 		Evento eventoB = getEvento();
-		eventoB.getOcorrencia().getDadosOcorrencia().getIdeEmpregador().setNrInsc("INVALIDO");
+		eventoB.getOcorrencia().getDadosOcorrencia().getIdeEmpregador().setNrInsc("INVALIDO!");
 		
 		List<Evento> resultado = envioServico
 				.enviarEventosParaESocialGov(Arrays.asList(eventoA, eventoB))
@@ -230,7 +230,7 @@ public class EnvioServicoTest {
 	@DataSet(executeScriptsBefore = "cleanup.sql")
 	public void deveMudarEstadoParaErroSeEventoNaoPuderSerGerado() {
 		Evento evento = getEvento();
-		evento.getOcorrencia().getDadosOcorrencia().getIdeEmpregador().setNrInsc("INVALIDO");
+		evento.getOcorrencia().getDadosOcorrencia().getIdeEmpregador().setNrInsc("INVALIDO!");
 		EnvioEvento resultado = envioServico.enviarEventosParaESocialGov(Collections.singletonList(evento)).get(0);
 		assertThat(resultado.getEvento().getEstado().getId()).isEqualTo(Estado.ERRO.getId());
 	}

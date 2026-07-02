@@ -34,6 +34,9 @@ public class DmDev {
 
     private InfoRRA infoRRA;
 
+    @Size(min=9, max=9)
+    private String notAFT;
+
     public String getIdeDmDev() {
         return ideDmDev;
     }
@@ -104,5 +107,13 @@ public class DmDev {
 
     public void setInfoRRA(InfoRRA infoRRA) {
         this.infoRRA = infoRRA;
+    }
+
+    public String getNotAFT() {
+        return notAFT;
+    }
+
+    public void setNotAFT(String notAFT) {
+        this.notAFT = notAFT;
     }
 }

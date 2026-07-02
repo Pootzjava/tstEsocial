@@ -2,8 +2,6 @@ package br.jus.tst.esocial.dominio.semvinculo;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.br.CNPJ;
-
 import java.math.BigInteger;
 import java.util.Calendar;
 
@@ -18,7 +16,6 @@ public class InfoMandElet {
 	@NotNull
 	private BigInteger categOrig;
 
-	@CNPJ
 	private String cnpjOrig;
 
 	private String matricOrig;

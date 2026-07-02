@@ -4,13 +4,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.br.CNPJ;
 
 import br.jus.tst.esocial.dominio.enums.UF;
 
 public class InstEnsino {
 	
-	@CNPJ
 	private String cnpjInstEnsino;
 	
 	@NotNull
