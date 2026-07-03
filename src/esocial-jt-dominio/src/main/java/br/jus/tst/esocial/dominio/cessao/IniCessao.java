@@ -3,7 +3,6 @@ package br.jus.tst.esocial.dominio.cessao;
 import br.jus.tst.esocial.dominio.enums.SimNao;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.validator.constraints.br.CNPJ;
 
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
@@ -14,7 +13,6 @@ public class IniCessao {
 	private Calendar dtIniCessao;
 	
 	@NotNull
-	@CNPJ
 	private String cnpjCess;
 	
 	@NotNull

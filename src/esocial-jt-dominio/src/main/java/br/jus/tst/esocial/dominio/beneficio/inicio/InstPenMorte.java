@@ -11,6 +11,10 @@ public class InstPenMorte {
 	@NotNull
 	private Calendar dtInst;
 
+	private String tpDepInst;
+
+	private String descrDepInst;
+
 	public String getCpfInst() {
 		return cpfInst;
 	}
@@ -25,5 +29,21 @@ public class InstPenMorte {
 
 	public void setDtInst(Calendar dtInst) {
 		this.dtInst = dtInst;
-	} 
+	}
+
+	public String getTpDepInst() {
+		return tpDepInst;
+	}
+
+	public void setTpDepInst(String tpDepInst) {
+		this.tpDepInst = tpDepInst;
+	}
+
+	public String getDescrDepInst() {
+		return descrDepInst;
+	}
+
+	public void setDescrDepInst(String descrDepInst) {
+		this.descrDepInst = descrDepInst;
+	}
 }

@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
 public class Beneficiario {
@@ -15,7 +14,6 @@ public class Beneficiario {
 	
 	private String matricula;
 	
-	@CNPJ
 	private String cnpjOrigem;
 
 	public String getCpfBenef() {

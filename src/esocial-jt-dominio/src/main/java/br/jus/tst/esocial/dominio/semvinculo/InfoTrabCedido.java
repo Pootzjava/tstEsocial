@@ -5,14 +5,11 @@ import java.util.Calendar;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.br.CNPJ;
-
 public class InfoTrabCedido {
 	
 	@NotNull
 	private Integer categOrig;
 	
-	@CNPJ
 	@NotNull
 	private String cnpjCednt;
 	

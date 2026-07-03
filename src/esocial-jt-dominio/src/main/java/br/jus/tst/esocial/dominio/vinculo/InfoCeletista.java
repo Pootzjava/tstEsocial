@@ -1,7 +1,5 @@
 package br.jus.tst.esocial.dominio.vinculo;
 
-import org.hibernate.validator.constraints.br.CNPJ;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -32,7 +30,6 @@ public class InfoCeletista {
 	private Byte dtBase;
 	
 	@NotNull
-	@CNPJ
 	private String cnpjSindCategProf;
 	
 	@Valid

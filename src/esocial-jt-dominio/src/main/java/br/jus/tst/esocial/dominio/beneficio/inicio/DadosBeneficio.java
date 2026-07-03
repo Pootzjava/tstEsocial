@@ -20,6 +20,9 @@ public class DadosBeneficio {
 	@Valid
 	private InfoPenMorte infoPenMorte;
 
+	@Valid
+	private InfoHomolog infoHomolog;
+
 	public String getTpBeneficio() {
 		return tpBeneficio;
 	}
@@ -59,5 +62,13 @@ public class DadosBeneficio {
 	public void setInfoPenMorte(InfoPenMorte infoPenMorte) {
 		this.infoPenMorte = infoPenMorte;
 	}
-	
+
+	public InfoHomolog getInfoHomolog() {
+		return infoHomolog;
+	}
+
+	public void setInfoHomolog(InfoHomolog infoHomolog) {
+		this.infoHomolog = infoHomolog;
+	}
+
 }
