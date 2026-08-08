@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.trabalhador.alteracaocadastral;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.br.CPF;
 

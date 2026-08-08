@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.pagamento;
 
 import br.jus.tst.esocial.dominio.enums.Sim;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.Calendar;
 
 public class InfoDep {

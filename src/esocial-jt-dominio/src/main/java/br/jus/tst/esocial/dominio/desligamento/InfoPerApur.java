@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.desligamento;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public class InfoPerApur {
 

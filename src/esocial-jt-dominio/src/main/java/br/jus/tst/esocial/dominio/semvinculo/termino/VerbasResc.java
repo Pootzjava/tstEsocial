@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.semvinculo.termino;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import br.jus.tst.esocial.dominio.demonstrativovalores.DmDev;
 import br.jus.tst.esocial.dominio.trabalhador.identificacaobasica.InfoMV;

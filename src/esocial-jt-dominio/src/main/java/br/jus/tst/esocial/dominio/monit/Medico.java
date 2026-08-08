@@ -4,7 +4,7 @@ import br.jus.tst.esocial.dominio.enums.UF;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class Medico {
 

@@ -1,54 +1,43 @@
 ```
-# Compiled and build artifacts
+# Java/Maven specific ignores
 *.class
-*.o
-*.obj
-*.out
-*.pyc
-__pycache__/
-*.pyo
-*.pyd
-*.so
-*.dll
-*.exe
 *.jar
 *.war
 *.ear
 *.zip
 *.tar.gz
-*.tar.bz2
-*.tar.xz
+target/
 
 # Dependencies
-node_modules/
-venv/
-.venv/
-.env
-.env.local
-.env.*
-target/
-.gradle/
-.mypy_cache/
-.pytest_cache/
-coverage/
-htmlcov/
-.coverage
+lib/
+libs/
 
-# Build directories typically found in Java/Maven projects
+# IDE specific
+.classpath
+.project
+.settings/
+nbproject/
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Build tools
+.gradle/
 build/
 dist/
-
-# IDE specific files
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# System files
-.DS_Store
-Thumbs.db
+out/
 
 # Logs
 *.log
+logs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 ```

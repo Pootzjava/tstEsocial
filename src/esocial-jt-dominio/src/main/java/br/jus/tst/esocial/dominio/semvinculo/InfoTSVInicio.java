@@ -2,8 +2,8 @@ package br.jus.tst.esocial.dominio.semvinculo;
 
 import java.util.Calendar;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import br.jus.tst.esocial.dominio.vinculo.Afastamento;
 

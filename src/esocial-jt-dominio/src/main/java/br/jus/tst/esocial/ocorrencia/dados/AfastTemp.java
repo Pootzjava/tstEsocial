@@ -7,7 +7,7 @@ import br.jus.tst.esocial.dominio.afasttemp.IniAfastamento;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Calendar;
 import java.util.Optional;
 

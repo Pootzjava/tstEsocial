@@ -4,8 +4,8 @@ import br.jus.tst.esocial.dominio.enums.SimNao;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.util.Calendar;
 

@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.beneficio.inicio;
 
 import java.util.Calendar;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class MudancaCPF {
 

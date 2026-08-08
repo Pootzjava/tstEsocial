@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.tabela.lotacao;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public class InfoProcJudTerceiros {
 

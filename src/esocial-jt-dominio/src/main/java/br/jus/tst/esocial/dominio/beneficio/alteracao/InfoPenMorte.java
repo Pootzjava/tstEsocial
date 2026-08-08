@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.beneficio.alteracao;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public class InfoPenMorte {
 	private byte tpPenMorte;

@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.vinculo;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import br.jus.tst.esocial.dominio.endereco.EnderecoBrasil;
 

@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.demonstrativovalores;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import br.jus.tst.esocial.dominio.estabelecimento.IdeEstab;
 import br.jus.tst.esocial.dominio.estabelecimentolotacao.IdeEstabLot;

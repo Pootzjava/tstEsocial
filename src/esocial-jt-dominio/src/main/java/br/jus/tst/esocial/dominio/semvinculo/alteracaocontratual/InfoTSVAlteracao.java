@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.semvinculo.alteracaocontratual;
 
 import java.util.Calendar;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import br.jus.tst.esocial.dominio.semvinculo.InfoComplementares;
 

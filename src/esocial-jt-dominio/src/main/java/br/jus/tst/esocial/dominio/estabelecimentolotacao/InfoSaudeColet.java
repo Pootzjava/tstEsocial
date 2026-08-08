@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.estabelecimentolotacao;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import br.jus.tst.esocial.dominio.termino.DetOper;
 

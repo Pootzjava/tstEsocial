@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.beneficio;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class IdeBeneficio {
 

@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.pagamento;
 
 import br.jus.tst.esocial.dominio.enums.SimNao;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class InfoFech {
 

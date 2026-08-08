@@ -3,8 +3,8 @@ package br.jus.tst.esocial.dominio.semvinculo.termino;
 import br.jus.tst.esocial.dominio.termino.Quarentena;
 import br.jus.tst.esocial.dominio.vinculo.MudancaCPF;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Calendar;
 

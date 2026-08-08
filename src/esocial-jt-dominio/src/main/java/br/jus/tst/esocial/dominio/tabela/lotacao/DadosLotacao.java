@@ -1,8 +1,8 @@
 package br.jus.tst.esocial.dominio.tabela.lotacao;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 /**
  * Detalhamento das informações da lotação que está sendo incluída

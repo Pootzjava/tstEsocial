@@ -5,10 +5,10 @@ import br.jus.tst.esocial.dominio.enums.SimNao;
 import br.jus.tst.esocial.dominio.termino.Quarentena;
 import br.jus.tst.esocial.dominio.vinculo.MudancaCPF;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;

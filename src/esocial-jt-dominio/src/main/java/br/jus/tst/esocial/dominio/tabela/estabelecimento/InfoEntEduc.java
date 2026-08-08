@@ -1,7 +1,7 @@
 package br.jus.tst.esocial.dominio.tabela.estabelecimento;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 /**
  * Identificação da(s) entidade(s) educativa(s) ou de prática desportiva

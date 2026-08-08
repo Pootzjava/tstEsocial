@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.pagamento;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 

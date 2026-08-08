@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.beneficio.demonstrativovalores;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class IdePeriodo {
 	

@@ -3,7 +3,7 @@ package br.jus.tst.esocial.dominio.beneficio.reativacao;
 import java.util.Calendar;
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class InfoReativ {
 	@NotNull
