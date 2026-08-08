@@ -1,6 +1,7 @@
 package br.jus.tst.esocialjt.certificado.negocio;
 
 import br.jus.tst.esocialjt.certificado.Certificado;
+import br.jus.tst.esocialjt.certificado.repositorio.TenantCertificadoRepository;
 import br.jus.tst.esocialjt.negocio.exception.EntidadeNaoExisteException;
 import br.jus.tst.esocialjt.tenant.TenantContext;
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -28,9 +28,12 @@ public class CertificadoDinamicoService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CertificadoDinamicoService.class);
 
     private final TenantContext tenantContext;
+    private final TenantCertificadoRepository certificadoRepository;
 
-    public CertificadoDinamicoService(TenantContext tenantContext) {
+    public CertificadoDinamicoService(TenantContext tenantContext, 
+                                       TenantCertificadoRepository certificadoRepository) {
         this.tenantContext = tenantContext;
+        this.certificadoRepository = certificadoRepository;
     }
 
     /**
@@ -46,8 +49,6 @@ public class CertificadoDinamicoService {
             throw new IllegalStateException("Não há tenant ativo no contexto. Certifique-se de que o header X-Tenant-ID foi informado.");
         }
 
-        // Em produção, buscar do banco de dados ou vault
-        // Aqui simulamos a busca pelos metadados do tenant
         TenantCertificadoDTO certDTO = buscarCertificadoDoTenant(tenantId);
         
         if (certDTO == null || !certDTO.temCertificadoValido()) {
@@ -70,24 +71,12 @@ public class CertificadoDinamicoService {
 
     /**
      * Busca os dados do certificado associados ao tenant.
-     * EM PRODUÇÃO: Implementar repositório para buscar do banco PostgreSQL
      * 
      * @param tenantId identificador do tenant
      * @return DTO com dados do certificado
      */
     private TenantCertificadoDTO buscarCertificadoDoTenant(String tenantId) {
-        // TODO: Implementar chamada ao repository
-        // TenantCertificadoRepository.findByTenantId(tenantId)
-        
-        // Simulação para desenvolvimento - em produção virá do banco
-        // Este código deve ser substituído por chamada ao banco de dados
-        LOGGER.warn("Busca de certificado em modo simulação. Implementar repository em produção.");
-        
-        // Exemplo de como será em produção:
-        // return tenantCertificadoRepository.findByTenantId(tenantId)
-        //     .orElseThrow(() -> new EntidadeNaoExisteException(...));
-        
-        return null; // Retorna null para forçar implementação do repository
+        return certificadoRepository.findByTenantId(tenantId).orElse(null);
     }
 
     /**
