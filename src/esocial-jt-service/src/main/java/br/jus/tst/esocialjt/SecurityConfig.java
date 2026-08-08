@@ -11,9 +11,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 @KeycloakConfiguration
 @ConditionalOnProperty(name = "keycloak.enabled", havingValue = "true")
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 	@Value("${esocialjt.security.role:}")
@@ -37,18 +37,17 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 	}
 
 	protected void configureHttp(HttpSecurity http) throws Exception {
-		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry =
-				http.cors().and().csrf().disable()
-						.authorizeRequests()
-						.antMatchers("/actuator/**").permitAll()
-						.antMatchers("/swagger**/**").permitAll()
-						.antMatchers("/swagger**").permitAll()
-						.antMatchers("/v3/api-docs**/**").permitAll();
+		http.cors().and().csrf().disable()
+				.authorizeHttpRequests()
+				.requestMatchers("/actuator/**").permitAll()
+				.requestMatchers("/swagger**/**").permitAll()
+				.requestMatchers("/swagger**").permitAll()
+				.requestMatchers("/v3/api-docs**/**").permitAll();
 
 		if (StringUtils.isNotBlank(role)) {
-			registry.anyRequest().hasAuthority(role);
+			http.authorizeHttpRequests().anyRequest().hasAuthority(role);
 		} else {
-			registry.anyRequest().authenticated();
+			http.authorizeHttpRequests().anyRequest().authenticated();
 		}
 	}
 

@@ -1,6 +1,6 @@
 package br.jus.tst.esocialjt.multitenant.infraestrutura.config;
 
-import br.jus.tst.esocialjt.multitenant.TenantContext;
+import br.jus.tst.esocialjt.tenant.TenantContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -23,7 +23,7 @@ public class TenantDataSourceRouter extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        String tenantId = TenantContext.getTenantId();
+        String tenantId = TenantContext.getTenantIdStatic();
         
         if (tenantId == null || tenantId.isBlank()) {
             log.warn("TenantId não definido no contexto. Usando schema 'public' como fallback.");

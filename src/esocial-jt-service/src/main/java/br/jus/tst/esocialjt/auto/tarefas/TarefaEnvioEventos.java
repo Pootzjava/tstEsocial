@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import br.jus.tst.esocialjt.dominio.GrupoTipoEvento;
 import org.slf4j.Logger;

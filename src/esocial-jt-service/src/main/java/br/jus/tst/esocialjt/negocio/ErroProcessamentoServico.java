@@ -7,8 +7,8 @@ import br.jus.tst.esocialjt.dominio.TipoErroProcessamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

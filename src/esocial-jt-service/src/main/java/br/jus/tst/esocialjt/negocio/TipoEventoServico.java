@@ -5,7 +5,7 @@ import br.jus.tst.esocialjt.dominio.TipoEvento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.EnumMap;
 import java.util.Map;
 

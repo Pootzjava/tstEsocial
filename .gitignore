@@ -1,43 +1,39 @@
 ```
-# Java/Maven specific ignores
+# Java/Maven specific
+target/
 *.class
 *.jar
 *.war
 *.ear
 *.zip
 *.tar.gz
-target/
 
-# Dependencies
-lib/
-libs/
-
-# IDE specific
-.classpath
-.project
-.settings/
-nbproject/
+# IDE
 .idea/
-*.iws
 *.iml
 *.ipr
+*.iws
+.vscode/
 
-# Build tools
-.gradle/
-build/
-dist/
-out/
+# Environment
+.env
+.env.local
+*.env.*
 
 # Logs
 *.log
-logs/
 
-# OS generated files
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
+
+# Build system
+.mvn/
+.gradle/
+build/
 ```
