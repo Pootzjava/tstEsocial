@@ -6,6 +6,8 @@ import java.io.StringReader;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.SoapFaultClientException;
@@ -16,14 +18,18 @@ import org.w3c.dom.Element;
 import br.jus.esocialjt.comunicacao.wsdl.ConsultarLoteEventos;
 import br.jus.esocialjt.comunicacao.wsdl.ConsultarLoteEventosResponse;
 import br.jus.esocialjt.comunicacao.wsdl.EnviarLoteEventosResponse;
+import br.jus.tst.esocialjt.certificado.Certificado;
 import br.jus.tst.esocialjt.xml.XmlTools;
 
 public class ComunicacaoServico extends WebServiceGatewaySupport {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComunicacaoServico.class);
 	
 	private String urlConsultaLoteGov;
 	private String actionConsultaLoteGov;
 	private String urlEnviarLoteGov;
 	private String actionEnviarLoteGov;
+	private Certificado certificado;
 	
 	
 	public String enviarLote(String lote) throws XmlMappingException, IOException {
