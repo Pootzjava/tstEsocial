@@ -3,51 +3,52 @@
 *.class
 *.o
 *.obj
-*.exe
-*.dll
-*.so
-*.a
 *.out
-target/
-build/
-
-# Dependencies
-**/target/
-.m2/
-.gradle/
-**/.gradle/
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-
-# Environment
-.env
-.env.local
-*.env.*
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Python specific (if applicable)
-__pycache__/
 *.pyc
+__pycache__/
 *.pyo
 *.pyd
-.venv/
-venv/
-*.egg-info/
+*.so
+*.dll
+*.exe
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
 
-# Coverage reports
+# Dependencies
+node_modules/
+venv/
+.venv/
+.env
+.env.local
+.env.*
+target/
+.gradle/
+.mypy_cache/
+.pytest_cache/
 coverage/
 htmlcov/
 .coverage
 
+# Build directories typically found in Java/Maven projects
+build/
+dist/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
 # System files
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
 ```
