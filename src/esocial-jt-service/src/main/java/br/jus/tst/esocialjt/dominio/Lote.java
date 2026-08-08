@@ -61,18 +61,15 @@ public class Lote implements Serializable {
 	private String protocolo;
 
 	@Lob
-	@Column(columnDefinition = "TEXT")
-	@Column(name = "TXT_RETORNO")
+	@Column(name = "TXT_RETORNO", columnDefinition = "TEXT")
 	private String retorno;
 
 	@Lob
-	@Column(columnDefinition = "TEXT")
-	@Column(name = "TXT_XML_LOTE")
+	@Column(name = "TXT_XML_LOTE", columnDefinition = "TEXT")
 	private String xmlLote;
 
 	@Lob
-	@Column(columnDefinition = "TEXT")
-	@Column(name = "TXT_ERRO_INTERNO")
+	@Column(name = "TXT_ERRO_INTERNO", columnDefinition = "TEXT")
 	private String erroInterno;
 
 	@OneToMany(mappedBy = "lote", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

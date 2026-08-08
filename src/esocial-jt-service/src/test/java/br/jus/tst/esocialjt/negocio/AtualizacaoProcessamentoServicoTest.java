@@ -20,7 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.Arrays;
 
 @RunWith(SpringRunner.class)

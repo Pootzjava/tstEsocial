@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,15 +26,15 @@ import java.util.Arrays;
 @KeycloakConfiguration
 @ConditionalOnProperty(name = "keycloak.enabled", havingValue = "true")
 @EnableMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
 	@Value("${esocialjt.security.role:}")
 	String role;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		super.configure(http);
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		configureHttp(http);
+		return http.build();
 	}
 
 	protected void configureHttp(HttpSecurity http) throws Exception {
@@ -65,17 +66,15 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) {
-		auth.authenticationProvider(keycloakAuthenticationProvider());
+		auth.authenticationProvider(new org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider());
 	}
 
 	@Bean
-	@Override
-	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+	public SessionAuthenticationStrategy sessionAuthenticationStrategy() {
 		return new NullAuthenticatedSessionStrategy();
 	}
 
 	@Bean
-	@Override
 	@ConditionalOnMissingBean(HttpSessionManager.class)
 	protected HttpSessionManager httpSessionManager() {
 		return new HttpSessionManager();

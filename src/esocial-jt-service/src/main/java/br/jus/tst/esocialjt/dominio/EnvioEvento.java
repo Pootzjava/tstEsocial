@@ -61,8 +61,7 @@ public class EnvioEvento implements Serializable {
 	private String versao;
 
 	@Lob
-	@Column(columnDefinition = "TEXT")
-	@Column(name = "TXT_ERRO_INTERNO")
+	@Column(name = "TXT_ERRO_INTERNO", columnDefinition = "TEXT")
 	private String erroInterno;
 
 	@Transient

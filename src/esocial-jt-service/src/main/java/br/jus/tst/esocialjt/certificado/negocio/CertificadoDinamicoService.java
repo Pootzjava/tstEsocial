@@ -42,7 +42,7 @@ public class CertificadoDinamicoService {
      * @return Certificado configurado para o tenant atual
      * @throws EntidadeNaoExisteException se não houver certificado configurado para o tenant
      */
-    public Certificado carregarCertificadoParaTenantAtual() {
+    public Certificado carregarCertificadoParaTenantAtual() throws EntidadeNaoExisteException {
         String tenantId = tenantContext.getTenantId();
         
         if (tenantId == null) {

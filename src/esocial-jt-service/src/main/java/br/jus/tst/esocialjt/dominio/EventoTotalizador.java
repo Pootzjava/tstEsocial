@@ -61,8 +61,7 @@ public class EventoTotalizador implements Serializable {
 	private String cpfTrabalhador;
 
 	@Lob
-	@Column(columnDefinition = "TEXT")
-	@Column(name = "TXT_XML_EVENTO_TOTALIZADOR")
+	@Column(name = "TXT_XML_EVENTO_TOTALIZADOR", columnDefinition = "TEXT")
 	private String xmlEventoTotalizador;
 
 	@JsonIgnore
