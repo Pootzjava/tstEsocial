@@ -4,10 +4,10 @@
 *.o
 *.obj
 *.out
-*.exe
 *.dll
 *.so
 *.a
+*.exe
 
 # Dependencies
 target/
@@ -27,7 +27,7 @@ target/
 .vscode/
 .idea/
 
-# Coverage reports
+# Coverage
 coverage/
 htmlcov/
 .coverage
@@ -37,6 +37,12 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.pytest_cache/
 .mypy_cache/
+.pytest_cache/
+
+# Java/Maven specific
+*.jar
+*.war
+*.ear
+!*.java
 ```
