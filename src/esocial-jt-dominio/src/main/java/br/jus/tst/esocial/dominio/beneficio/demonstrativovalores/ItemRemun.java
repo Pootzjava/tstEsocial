@@ -4,7 +4,7 @@ import br.jus.tst.esocial.dominio.folha.DescFolha;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class ItemRemun {
 		@NotNull

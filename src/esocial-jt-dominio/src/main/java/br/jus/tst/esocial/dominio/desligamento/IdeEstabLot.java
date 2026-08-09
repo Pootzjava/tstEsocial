@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.desligamento;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import br.jus.tst.esocial.dominio.estabelecimentolotacao.DetVerbas;
 import br.jus.tst.esocial.dominio.estabelecimentolotacao.InfoAgNocivo;

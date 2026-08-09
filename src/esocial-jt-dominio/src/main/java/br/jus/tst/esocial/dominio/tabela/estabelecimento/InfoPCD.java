@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.tabela.estabelecimento;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.hibernate.validator.constraints.Length;
 

@@ -1,7 +1,7 @@
 package br.jus.tst.esocial.dominio.trabalhador.identificacaobasica;
 
 import java.util.List;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public class InfoMV {
 	

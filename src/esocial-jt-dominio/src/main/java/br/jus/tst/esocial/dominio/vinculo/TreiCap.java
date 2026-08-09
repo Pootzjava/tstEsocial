@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.vinculo;
 
 import java.math.BigInteger;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class TreiCap {
 	

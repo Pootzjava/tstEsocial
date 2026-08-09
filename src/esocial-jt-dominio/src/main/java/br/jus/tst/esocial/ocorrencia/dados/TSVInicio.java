@@ -5,7 +5,7 @@ import br.jus.tst.esocial.dominio.trabalhador.Trabalhador;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Calendar;
 import java.util.Optional;
 

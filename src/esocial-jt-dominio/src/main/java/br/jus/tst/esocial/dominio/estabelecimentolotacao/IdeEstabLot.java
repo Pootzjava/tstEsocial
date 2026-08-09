@@ -2,9 +2,9 @@ package br.jus.tst.esocial.dominio.estabelecimentolotacao;
 
 import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class IdeEstabLot {
 

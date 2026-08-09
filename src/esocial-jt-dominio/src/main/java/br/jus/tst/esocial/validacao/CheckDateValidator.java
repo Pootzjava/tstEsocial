@@ -3,8 +3,8 @@ package br.jus.tst.esocial.validacao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class CheckDateValidator implements ConstraintValidator<CheckDate, String> {
 	String[] dateFormat = null;

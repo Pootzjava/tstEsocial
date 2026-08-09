@@ -1,7 +1,7 @@
 package br.jus.tst.esocial.dominio.pagamento;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class DedDepen {

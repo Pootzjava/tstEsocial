@@ -11,7 +11,7 @@ import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -62,8 +62,7 @@ public class Ocorrencia implements Serializable {
 	private Date dataRecebimento;
 
 	@Lob
-	@Type(type = "org.hibernate.type.TextType")
-	@Column(name = "TXT_DADOS_OCORRENCIA")
+        @Column(name = "TXT_DADOS_OCORRENCIA", columnDefinition = "TEXT")
 	@Access(AccessType.PROPERTY)
 	private String txtDadosOcorrencia;
 

@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.demonstrativovalores;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import br.jus.tst.esocial.dominio.beneficio.demonstrativovalores.IdePeriodo;
 import br.jus.tst.esocial.dominio.enums.SimNao;

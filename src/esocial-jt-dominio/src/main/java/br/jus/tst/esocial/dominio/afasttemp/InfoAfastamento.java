@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.afasttemp;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public class InfoAfastamento {
 	@Valid

@@ -2,8 +2,8 @@ package br.jus.tst.esocial.dominio.estabelecimento;
 
 import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 
 import br.jus.tst.esocial.dominio.estabelecimentolotacao.RemunPerAnt;
 import br.jus.tst.esocial.dominio.estabelecimentolotacao.RemunPerApur;

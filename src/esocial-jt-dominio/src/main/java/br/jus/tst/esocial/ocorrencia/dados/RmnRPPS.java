@@ -7,8 +7,8 @@ import br.jus.tst.esocial.util.DataUtil;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;

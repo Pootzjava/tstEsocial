@@ -3,8 +3,8 @@ package br.jus.tst.esocial.dominio.exprisco;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.validation.constraints.NotNull;
+import jakarta.xml.bind.annotation.XmlElement;
 
 public class InfoAmb {
     @NotNull

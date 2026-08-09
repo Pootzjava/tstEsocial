@@ -3,8 +3,8 @@ package br.jus.tst.esocial.dominio.beneficio.inicio;
 import java.util.Calendar;
 import java.util.Objects;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import br.jus.tst.esocial.dominio.enums.SimNao;
 

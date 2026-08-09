@@ -3,9 +3,9 @@ package br.jus.tst.esocial.dominio.desligamento;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import br.jus.tst.esocial.dominio.demonstrativovalores.IdePeriodo;
 

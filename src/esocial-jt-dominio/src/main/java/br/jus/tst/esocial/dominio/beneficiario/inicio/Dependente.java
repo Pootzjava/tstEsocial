@@ -4,8 +4,8 @@ import br.jus.tst.esocial.dominio.enums.Sexo;
 import br.jus.tst.esocial.dominio.enums.SimNao;
 import org.hibernate.validator.constraints.br.CPF;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Calendar;
 
 public class Dependente {

@@ -1,7 +1,7 @@
 package br.jus.tst.esocial.dominio.empregador;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 

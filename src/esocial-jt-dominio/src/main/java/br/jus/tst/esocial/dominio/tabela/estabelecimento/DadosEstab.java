@@ -2,8 +2,8 @@ package br.jus.tst.esocial.dominio.tabela.estabelecimento;
 
 import java.math.BigInteger;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * 

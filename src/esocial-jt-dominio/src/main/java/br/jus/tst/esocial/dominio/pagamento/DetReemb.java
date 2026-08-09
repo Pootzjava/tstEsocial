@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.pagamento;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 
 public class DetReemb {

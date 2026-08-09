@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.tabela.estabelecimento;
 
-import javax.validation.constraints.Null;
+import jakarta.validation.constraints.Null;
 
 /**
  * Registro preenchido exclusivamente por empresa construtora enquadrada nos

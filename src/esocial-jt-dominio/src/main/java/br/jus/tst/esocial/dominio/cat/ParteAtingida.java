@@ -3,7 +3,7 @@ package br.jus.tst.esocial.dominio.cat;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 public class ParteAtingida {

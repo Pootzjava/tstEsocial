@@ -4,7 +4,7 @@ import br.jus.tst.esocial.dominio.enums.SimNao;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Calendar;
 
 public class IniCessao {

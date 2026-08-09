@@ -3,8 +3,8 @@ package br.jus.tst.esocial.ocorrencia.dados;
 import br.jus.tst.esocial.dominio.cat.Cat;
 import br.jus.tst.esocial.dominio.sst.IdeVinculoSST;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.Optional;
 

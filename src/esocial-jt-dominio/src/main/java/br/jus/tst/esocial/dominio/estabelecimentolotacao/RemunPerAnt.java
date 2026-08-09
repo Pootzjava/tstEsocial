@@ -3,7 +3,7 @@ package br.jus.tst.esocial.dominio.estabelecimentolotacao;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 import br.jus.tst.esocial.dominio.demonstrativovalores.InfoTrabInterm;
 

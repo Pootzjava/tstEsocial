@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.desligamento;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import br.jus.tst.esocial.dominio.trabalhador.identificacaobasica.InfoMV;
 import br.jus.tst.esocial.dominio.trabalhador.identificacaobasica.ProcJudTrab;

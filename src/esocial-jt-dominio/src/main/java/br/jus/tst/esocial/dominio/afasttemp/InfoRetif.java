@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.afasttemp;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 public class InfoRetif {
 	

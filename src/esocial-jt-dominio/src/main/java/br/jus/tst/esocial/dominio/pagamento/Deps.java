@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.pagamento;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class Deps {
 	

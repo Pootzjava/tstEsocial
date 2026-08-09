@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.tabela.rubrica;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class IdeProcessoFGTS {
 	

@@ -3,8 +3,8 @@ package br.jus.tst.esocial.ocorrencia.dados;
 import br.jus.tst.esocial.dominio.beneficio.IdeBeneficio;
 import br.jus.tst.esocial.dominio.beneficio.alteracao.InfoBenAlteracao;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Optional;

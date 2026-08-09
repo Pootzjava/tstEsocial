@@ -3,7 +3,7 @@ package br.jus.tst.esocial.dominio.semvinculo;
 import br.jus.tst.esocial.dominio.vinculo.LocalTrabGeral;
 import br.jus.tst.esocial.dominio.vinculo.Remuneracao;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public class InfoComplementares {
 	

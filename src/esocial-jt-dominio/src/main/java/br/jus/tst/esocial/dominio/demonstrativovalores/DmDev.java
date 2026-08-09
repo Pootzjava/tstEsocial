@@ -4,8 +4,8 @@ import br.jus.tst.esocial.dominio.estabelecimentolotacao.IdeEstabLot;
 import br.jus.tst.esocial.dominio.rra.IndRRA;
 import br.jus.tst.esocial.dominio.rra.InfoRRA;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import java.math.BigInteger;
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.semvinculo;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigInteger;
 import java.util.Calendar;

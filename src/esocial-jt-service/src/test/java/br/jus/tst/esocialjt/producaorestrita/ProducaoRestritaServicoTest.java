@@ -2,8 +2,8 @@ package br.jus.tst.esocialjt.producaorestrita;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;

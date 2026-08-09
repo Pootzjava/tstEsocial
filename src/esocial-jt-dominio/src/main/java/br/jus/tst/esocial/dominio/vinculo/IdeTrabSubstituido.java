@@ -1,6 +1,6 @@
 package br.jus.tst.esocial.dominio.vinculo;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.br.CPF;
 

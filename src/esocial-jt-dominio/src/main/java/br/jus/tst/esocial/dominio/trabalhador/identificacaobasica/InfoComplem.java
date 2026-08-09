@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.trabalhador.identificacaobasica;
 
 import java.util.Calendar;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 import br.jus.tst.esocial.dominio.vinculo.SucessaoVinc;
 

@@ -4,7 +4,7 @@ import br.jus.tst.esocial.dominio.ideEvento.IdeEventoFolha;
 import br.jus.tst.esocial.dominio.ideEvento.IdeEventoFolhaSemRetificacao;
 import br.jus.tst.esocial.dominio.pagamento.IdeBenef;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Calendar;
 import java.util.Optional;
 

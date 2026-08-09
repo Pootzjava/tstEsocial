@@ -12,6 +12,7 @@ import br.jus.tst.esocialjt.dominio.Estado;
 import br.jus.tst.esocialjt.dominio.EventoTotalizador;
 import br.jus.tst.esocialjt.dominio.Lote;
 import br.jus.tst.esocialjt.evento.EventoRepository;
+import br.jus.tst.esocialjt.negocio.apuracao.ApuracaoParserService;
 import br.jus.tst.esocialjt.negocio.exception.ComunicacaoEsocialGovException;
 import br.jus.tst.esocialjt.ocorrencia.OcorrenciaServico;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,9 @@ public class AtualizacaoProcessamentoServico {
 
 	@Autowired
 	private EventoRepository eventoRepository;
+
+	@Autowired
+	private ApuracaoParserService apuracaoParserService;
 
 	public List<Lote> atualizarTodosEmProcessamento() {
 		List<Lote> lotes = loteServico.criarConsulta().nosEstados(Estado.PROCESSAMENTO).buscar();
@@ -126,6 +130,14 @@ public class AtualizacaoProcessamentoServico {
 				eventoTotalizador.setXmlEventoTotalizador(eventoTot.getXmlEventoTotalizador());
 				try {
 					eventoTotalizadorServico.salvar(eventoTotalizador);
+					
+					// *** NOVO: Processar XML para extrair valores monetários do dashboard ***
+					apuracaoParserService.processarXmlTotalizador(
+						eventoTot.getTipo(), 
+						eventoTot.getXmlEventoTotalizador(),
+						nrReciboArquivoBase
+					);
+					
 				} catch (Exception e) {
                     LOGGER.error("Erro ao salvar evento totalizador: {}", e.getMessage());
 					if (e.getCause() instanceof SQLException) {

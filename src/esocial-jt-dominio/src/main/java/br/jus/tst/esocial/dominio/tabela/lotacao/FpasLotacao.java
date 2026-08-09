@@ -2,7 +2,7 @@ package br.jus.tst.esocial.dominio.tabela.lotacao;
 
 import java.math.BigInteger;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 

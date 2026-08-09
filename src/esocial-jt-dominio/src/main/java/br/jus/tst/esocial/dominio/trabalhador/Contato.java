@@ -1,7 +1,7 @@
 package br.jus.tst.esocial.dominio.trabalhador;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 public class Contato {
 	@Size(min=8, max=13)
