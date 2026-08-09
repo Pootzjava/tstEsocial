@@ -10,13 +10,20 @@
 *.exe
 
 # Dependencies
+lib/
 target/
-.gradle/
+**/target/
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage/
+htmlcov/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
+*.swo
 
 # Environment
 .env
@@ -27,22 +34,7 @@ target/
 .vscode/
 .idea/
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# Python specific
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.mypy_cache/
-.pytest_cache/
-
-# Java/Maven specific
-*.jar
-*.war
-*.ear
-!*.java
+# System files
+.DS_Store
+Thumbs.db
 ```
