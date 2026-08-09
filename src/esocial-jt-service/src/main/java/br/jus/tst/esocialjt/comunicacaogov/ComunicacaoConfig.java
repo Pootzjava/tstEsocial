@@ -11,13 +11,17 @@ import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
 
 import br.jus.tst.esocialjt.TipoAmbiente;
-import br.jus.tst.esocialjt.certificado.Certificado;
+import br.jus.tst.esocialjt.multitenant.CertificadoDinamicoService;
+
+import java.security.KeyStore;
+import java.security.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 @Configuration
 public class ComunicacaoConfig {
 	
 	@Autowired
-	Certificado certificado;
+	CertificadoDinamicoService certificadoDinamicoService;
 	
 	@Value("${esocialjt.ambiente}")
 	TipoAmbiente ambiente;
@@ -28,9 +32,8 @@ public class ComunicacaoConfig {
 		servico.setMarshaller(marshaller);
 		servico.setUnmarshaller(marshaller);
 		
-		if(certificado.existeConfiguracaoCertificado()) {
-			servico.setMessageSender(getHttpsMessageSender());
-		}
+		// Agora usa o serviço dinâmico de certificados por tenant
+		servico.setMessageSender(getHttpsMessageSender());
 		
 		servico.setActionEnviarLoteGov(ComunicacaoParametros.ENVIAR_ACTION);
 		servico.setActionConsultaLoteGov(ComunicacaoParametros.CONSULTAR_ACTION);
@@ -60,8 +63,30 @@ public class ComunicacaoConfig {
 	
 	private WebServiceMessageSender getHttpsMessageSender() {
 		HttpsUrlConnectionMessageSender messageSender = new HttpsUrlConnectionMessageSender();
-		messageSender.setKeyManagers(certificado.getKeyManagers());
-		messageSender.setTrustManagers(certificado.getTrustManagers());
+		
+		// Carrega certificado dinamicamente baseado no tenant atual
+		KeyStore keyStore = certificadoDinamicoService.loadKeyStoreForCurrentTenant();
+		
+		try {
+			// Extrai KeyManagers do KeyStore
+			String keyPassword = ""; // A senha já está protegida no próprio keystore
+			KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+			kmf.init(keyStore, keyPassword.toCharArray());
+			messageSender.setKeyManagers(kmf.getKeyManagers());
+			
+			// TrustManagers padrão (confia nas CAs do sistema)
+			TrustManagerFactory tmf = TrustManagerFactory.getInstance(
+				TrustManagerFactory.getDefaultAlgorithm());
+			tmf.init((KeyStore)null);
+			messageSender.setTrustManagers(tmf.getTrustManagers());
+			
+		} catch (Exception e) {
+			throw new br.jus.tst.esocialjt.negocio.exception.BusinessException(
+				"ERRO_CONFIGURACAO_SSL",
+				"Falha ao configurar conexão SSL com certificado digital. Verifique se o certificado está válido."
+			);
+		}
+		
 		messageSender.setHostnameVerifier((String hostname, SSLSession session) -> true);
 		return messageSender;
 	}
