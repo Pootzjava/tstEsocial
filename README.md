@@ -1,10 +1,12 @@
-# eSocial-JT
+# eSocial-JT - Plataforma Multi-tenant Premium
 
 ![build workflow](https://github.com/tst-labs/esocial/actions/workflows/build.yml/badge.svg)
 
 **[PROJETO EM DESENVOLVIMENTO] Atenção!** API ainda em desenvolvimento e portanto instável.
 
-- [eSocial-JT](#esocial-jt)
+> 🎉 **Nova Versão Multi-tenant!** Agora com suporte completo para múltiplos clientes simultâneos, certificados digitais dinâmicos e dashboard premium com Business Intelligence.
+
+- [eSocial-JT](#esocial-jt---plataforma-multi-tenant-premium)
   - [Introdução](#introdução)
   - [Guia rápido](#guia-rápido)
     - [Pré-requisitos](#pré-requisitos)
@@ -16,11 +18,14 @@
   - [Visão geral da arquitetura da solução](#visão-geral-da-arquitetura-da-solução)
   - [Características](#características)
     - [Funcionamento](#funcionamento)
+    - [Multi-tenancy](#multi-tenancy)
+    - [Dashboard Premium](#dashboard-premium)
   - [Configuração](#configuração-1)
     - [Configurações padrão](#configurações-padrão)
     - [Configurações obrigatórias](#configurações-obrigatórias)
     - [Configurações opcionais](#configurações-opcionais)
     - [Configurações avançadas](#configurações-avançadas)
+    - [Configurações Multi-tenant](#configurações-multi-tenant)
   - [Instalação](#instalação)
     - [Banco de dados](#banco-de-dados)
       - [Criação/Atualização automática dos esquemas de banco de dados](#criaçãoatualização-automática-dos-esquemas-de-banco-de-dados)
@@ -31,18 +36,21 @@
     - [Instalação como aplicação Java](#instalação-como-aplicação-java)
       - [Pré-requisitos](#pré-requisitos-2)
       - [Execução](#execução-2)
+      - [Regeneração de Classes JAXB](#regeneração-de-classes-jaxb-mudança-de-layout)
     - [Instalação em servidor de aplicação](#instalação-em-servidor-de-aplicação)
       - [Pré-requisitos](#pré-requisitos-3)
       - [Execução](#execução-3)
-  - [Configuração de serviços que usam certificado digital (assinatura de xml e envio para eSocial-Gov)](#configuração-de-serviços-que-usam-certificado-digital-assinatura-de-xml-e-envio-para-esocial-gov)
-    - [1. Instalação do <strong>esocial-jt-service</strong> e certificado no mesmo servidor](#1-instalação-do-esocial-jt-service-e-certificado-no-mesmo-servidor)
-    - [2. Instalação do <strong>esocial-jt-service</strong> sem certificado e usar serviços de outra instância do <strong>esocial-jt-service</strong> que possui um certificado](#2-instalação-do-esocial-jt-service-sem-certificado-e-usar-serviços-de-outra-instância-do-esocial-jt-service-que-possui-um-certificado)
-    - [3. Instalação do <strong>esocial-jt-service</strong> sem certificado e usar serviços de outra aplicação que forneça api REST para assinatura e envio de lotes](#3-instalação-do-esocial-jt-service-sem-certificado-e-usar-serviços-de-outra-aplicação-que-forneça-api-rest-para-assinatura-e-envio-de-lotes)
+  - [Configuração de serviços que usam certificado digital](#configuração-de-serviços-que-usam-certificado-digital-assinatura-de-xml-e-envio-para-esocial-gov)
+    - [1. Instalação do esocial-jt-service e certificado no mesmo servidor](#1-instalação-do-esocial-jt-service-e-certificado-no-mesmo-servidor)
+    - [2. Instalação sem certificado local](#2-instalação-do-esocial-jt-service-sem-certificado-e-usar-serviços-de-outra-instância)
+    - [3. Serviços externos de assinatura](#3-instalação-sem-certificado-e-usar-serviços-de-outra-aplicação-rest)
   - [API Rest](#api-rest)
+    - [Headers Multi-tenant](#headers-obrigatórios-para-multi-tenancy)
+    - [Endpoints do Dashboard](#endpoints-do-dashboard-premium)
   - [Sobre o projeto](#sobre-o-projeto)
     - [Escopo](#escopo)
-      - [O que esse software <strong>faz</strong>?](#o-que-esse-software-faz)
-      - [O que esse software <strong>não faz</strong>?](#o-que-esse-software-não-faz)
+      - [O que esse software faz?](#o-que-esse-software-faz)
+      - [O que esse software não faz?](#o-que-esse-software-não-faz)
     - [Estado atual](#estado-atual)
     - [Status por evento](#status-por-evento)
       - [Versões do eSocial-GOV](#versões-do-esocial-gov)
@@ -51,6 +59,7 @@
       - [Eventos não periódicos](#eventos-não-periódicos)
   - [Dúvidas e contato](#dúvidas-e-contato)
   - [Como contribuir](#como-contribuir)
+  - [Documentação Adicional](#documentação-adicional)
   - [Licença](#licença)
 
 ## Introdução
@@ -218,6 +227,32 @@ Quando está em execução, o **esocial-jt-service**
 
 > Obs. 4: Modelos dos arquivos _json_ podem ser encontrados na pasta do projeto [./src/esocial-jt-service/src/main/resources/exemplos](./src/esocial-jt-service/src/main/resources/exemplos) ou no _endpoint_ `GET` `/esocial-jt-service/ocorrencias/exemplos`
 
+### Multi-tenancy
+
+O sistema agora suporta arquitetura **multi-tenant** com isolamento completo de dados entre diferentes clientes/instituições:
+
+- **Estratégia:** Schema-per-tenant no PostgreSQL
+- **Isolamento:** Cada tenant possui seu próprio schema de banco de dados
+- **Certificados:** Gestão dinâmica de certificados digitais por tenant
+- **Headers obrigatórios:** `X-Tenant-ID` em todas as requisições
+- **Rastreabilidade:** Correlation ID único por requisição para logs auditáveis
+
+> **Nota:** Para mais detalhes técnicos, consulte [PLANO_REESTRUTURACAO_MULTITENANT.md](PLANO_REESTRUTURACAO_MULTITENANT.md)
+
+### Dashboard Premium
+
+O sistema disponibiliza dashboard avançado com indicadores gerenciais e Business Intelligence:
+
+- **Eventos eSocial:** Totais por estado, grupo e tipo (S-1000, S-2200, S-5010, etc.)
+- **Lotes:** Processamento, sucesso e erro
+- **Certificado:** Status, vencimento, número de série
+- **Apurações S-50XX:** FGTS, IRRF, Contribuições Previdenciárias
+- **Saúde do Sistema:** % Sucesso, % Erro, Status geral
+- **Histórico Mensal:** Gráficos de evolução de apurações
+- **Ranking:** Maiores apurações por período
+
+> **Nota:** Todos os dados são filtrados automaticamente pelo tenant ativo. Consulte [DASHBOARD_PREMIUM_IMPLEMENTADO.md](DASHBOARD_PREMIUM_IMPLEMENTADO.md) para detalhes dos endpoints.
+
 ## Configuração
 
 O **esocial-jt-service** é uma aplicação [Spring Boot](https://spring.io/projects/spring-boot), portanto, é possível [sobreescrever os parâmetros de configuração](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) por qualquer método disponibiliado pelo framework. As formas mais recomendadas para este projeto são:
@@ -288,6 +323,27 @@ spring.flyway.enabled=true
 
 Documentação oficial do [spring-boot](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
 
+### Configurações Multi-tenant
+
+Para habilitar o suporte multi-tenant, configure as seguintes propriedades:
+
+```properties
+# Habilita roteamento dinâmico de schemas por tenant
+esocialjt.multi-tenant.enabled=true
+
+# Estratégia de multi-tenancy (SCHEMA_PER_TENANT, DATABASE_PER_TENANT)
+esocialjt.multi-tenant.strategy=SCHEMA_PER_TENANT
+
+# Schema padrão para tenants sem configuração específica
+esocialjt.multi-tenant.default-schema=public
+
+# Chave de criptografia para senhas de certificados (obrigatório para produção)
+# Gerar com: openssl rand -base64 32
+esocialjt.criptografia-chave=CHAVE_SECRETA_AQUI
+```
+
+> **Importante:** A variável de ambiente `ESOCIAL_CHAVE_CRIPTOGRAFIA` deve ser configurada em produção para criptografar as senhas dos certificados digitais no banco de dados.
+
 ## Instalação
 
 A forma mais direta de instalação é via `docker-compose` (ver Guia rápido). Abaixo são listadas outras opções de instalação.
@@ -341,8 +397,8 @@ docker run -p "8080:8080" -v "/pasta/de/configuracao:/config" tstlabs/esocial-jt
 
 #### Pré-requisitos
 
-- [JDK 8](https://www.oracle.com/technetwork/pt/java/javase/downloads/index.html);
-- [Maven 3.3.9](https://maven.apache.org/index.html) (ou superior);
+- [JDK 17+](https://www.oracle.com/pt-br/java/technologies/downloads/);
+- [Maven 3.8+](https://maven.apache.org/index.html);
 - [Git 2.15.0](https://git-scm.com/) (ou superior);
 
 #### Execução
@@ -360,6 +416,11 @@ cd esocial/src
 mvn clean install
 ```
 
+> **Build rápido (sem testes):**
+> ```shellscript
+> mvn clean install -DskipTests
+> ```
+
 3. Crie o arquivo `application.properties` com as devidas configurações na pasta `src/esocial-jt-service/target`. Não esquecer de indicar o caminho para o arquivo `.pfx` do certificado digital.
 
 4. Execute a aplicação
@@ -367,6 +428,24 @@ mvn clean install
 ```shellscript
 java -jar ./src/esocial-jt-service/target/esocial-jt-service*.jar
 ```
+
+#### Regeneração de Classes JAXB (Mudança de Layout)
+
+Caso haja mudança no layout do eSocial (atualização dos XSDs/WSDLs), é necessário regenerar as classes Java no módulo `esocial-comunicacao`:
+
+```shellscript
+cd esocial/src/esocial-comunicacao
+mvn clean generate-sources -DskipTests
+```
+
+Após regenerar as classes, faça o build completo do projeto:
+
+```shellscript
+cd esocial/src
+mvn clean install
+```
+
+> **Nota sobre GraalVM:** Embora tecnicamente possível, **não recomendamos** o uso de GraalVM Native Image para este projeto sem uma refatoração significativa. O sistema utiliza processamento XML dinâmico (JAXB), certificados digitais e reflexão intensiva, o que gera complexidade adicional na compilação nativa. Para ambientes de produção, utilize a JVM tradicional (OpenJDK 17 ou 21) para maior estabilidade e compatibilidade.
 
 ### Instalação em servidor de aplicação
 
@@ -458,6 +537,48 @@ esocialjt.urlServicoAssinatura=http://10.0.0.100:8080/assinar/
 ## API Rest
 
 Um modelo da API Rest completa do projeto pode ser encontrada <a href="https://tst-labs.github.io/esocial/open-api/">neste link</a>. Além disso, esse mesmo modelo pode ser executado em localhost com o projeto no ar, por meio do endereço `http://localhost:8080/esocial-jt-service/swagger-ui.html`
+
+### Headers Obrigatórios para Multi-Tenancy
+
+Para utilizar a arquitetura multi-tenant, todas as requisições devem incluir os seguintes headers:
+
+| Header | Obrigatório | Descrição | Exemplo |
+|--------|-------------|-----------|---------|
+| `X-Tenant-ID` | **Sim** | Identificador único do tenant (geralmente CNPJ) | `12345678000190` |
+| `X-Correlation-ID` | Não | ID para rastreabilidade de logs (gerado automaticamente se não informado) | `abc-123-def-456` |
+
+**Exemplo de requisição:**
+
+```bash
+curl -X POST http://localhost:8080/esocial-jt-service/ocorrencias \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: 12345678000190" \
+  -H "X-Correlation-ID: req-001" \
+  -d @ocorrencia.json
+```
+
+### Endpoints do Dashboard Premium
+
+O sistema disponibiliza endpoints especializados para consultas gerenciais e de Business Intelligence:
+
+```bash
+# Dashboard completo com todos os indicadores
+GET /dashboard
+
+# Cards simplificados para dashboard inicial
+GET /dashboard/resumo
+
+# Health check com status detalhado
+GET /dashboard/saude
+
+# Histórico mensal de apurações (gráficos)
+GET /dashboard/apuracao
+
+# Ranking das maiores apurações
+GET /dashboard/apuracao/ranking
+```
+
+> **Nota:** Todos os endpoints retornam dados filtrados automaticamente pelo tenant identificado no header `X-Tenant-ID`.
 
 ## Sobre o projeto
 
@@ -578,6 +699,12 @@ Em caso de dúvidas, crie uma [issue](https://github.com/tst-labs/esocial/issues
 ## Como contribuir
 
 Leia nosso [guia de contribuição em andamento](CONTRIBUTING.md).
+
+## Documentação Adicional
+
+- [Plano de Reestruturação Multi-tenant](PLANO_REESTRUTURACAO_MULTITENANT.md) - Arquitetura completa e estratégias de implementação
+- [Dashboard Premium Implementado](DASHBOARD_PREMIUM_IMPLEMENTADO.md) - Guia dos endpoints e indicadores do dashboard
+- [Status da Reestruturação](STATUS_REESTRUTURACAO_MULTITENANT.md) - Progresso detalhado das implementações
 
 ## Licença
 
