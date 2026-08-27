@@ -156,3 +156,10 @@ export function useDashboardHistoricoApuracao() {
     enabled: true
   });
 }
+
+export function useUltimosEventos(page = 0) {
+  return useQuery(`/ocorrencias/paginado?page=${page}&size=10&estados=&expressao=&tipos=&incluirArquivados=false&cpf=&periodoApuracao=&dataInicio=&dataFim=`, queryFetcher, {
+    refetchInterval: REFRESH_INTERVAL,
+    enabled: true
+  });
+}

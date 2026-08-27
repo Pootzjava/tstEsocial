@@ -1,11 +1,18 @@
 import React from 'react';
 import { Container, Typography, Box, Alert } from '@mui/material';
-import { useDashboardTotais } from '../../api/ESocialJTServiceApi';
+import { useDashboardTotais, useDashboardHistoricoApuracao, useUltimosEventos } from '../../api/ESocialJTServiceApi';
 import DashboardKpiCards from './DashboardKpiCards';
+import DashboardCharts from './DashboardCharts';
+import UltimosEventosTable from './UltimosEventosTable';
 
 const DashboardPage = () => {
-  const { data, isLoading, error } = useDashboardTotais();
-
+  const { data: totais, isLoading: loadingTotais, error: errorTotais } = useDashboardTotais();
+  const { data: historico, isLoading: loadingHistorico, error: errorHistorico } = useDashboardHistoricoApuracao();
+  const { data: ultimosEventosData, isLoading: loadingEventos, error: errorEventos } = useUltimosEventos();
+  
+  // Extrair lista de eventos da resposta paginada
+  const ultimosEventos = ultimosEventosData?.content || [];
+  
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Box mb={4}>
@@ -17,21 +24,35 @@ const DashboardPage = () => {
         </Typography>
       </Box>
 
-      {error && (
+      {errorTotais && (
         <Alert severity="error" sx={{ mb: 3 }}>
-          Erro ao carregar dados do dashboard: {error.message}
+          Erro ao carregar totais: {errorTotais.message}
         </Alert>
       )}
 
-      <DashboardKpiCards data={data} loading={isLoading} />
+      <DashboardKpiCards data={totais} loading={loadingTotais} />
 
+      {/* Gráficos */}
       <Box mt={4}>
         <Typography variant="h6" gutterBottom>
-          📈 Histórico de Apuração
+          📈 Histórico e Distribuição
         </Typography>
-        <Alert severity="info">
-          Gráfico de histórico será implementado na próxima iteração
-        </Alert>
+        <DashboardCharts 
+          historicoData={historico} 
+          loading={loadingHistorico} 
+          error={errorHistorico}
+        />
+      </Box>
+
+      {/* Últimos Eventos */}
+      <Box mt={4}>
+        <Typography variant="h6" gutterBottom>
+          📋 Últimos Eventos Processados
+        </Typography>
+        <UltimosEventosTable 
+          data={ultimosEventos} 
+          loading={loadingEventos} 
+        />
       </Box>
     </Container>
   );
