@@ -8,7 +8,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ptBR } from "date-fns/locale";
 import { DialogProvider } from "muibox";
 import { SnackbarProvider } from "notistack";
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { ReactQueryDevtools } from "react-query/devtools";
 import App from "./app/App";
@@ -18,30 +18,49 @@ import CustomQueryClientProvider from "./CustomQueryClientProvider";
 import { NOME_APP } from "./shared/env";
 import { initKeycloak } from "./shared/keycloak";
 import theme from "./shared/theme";
+import darkTheme from "./theme/darkTheme";
 
 function renderApp() {
-  ReactDOM.render(
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
-          <DialogProvider>
-            <SnackbarProvider maxSnack={1}>
-              <LoadingProvider>
-                <CustomQueryClientProvider>
-                  <CssBaseline />
-                  <PostMessage>
-                    <App />
-                  </PostMessage>
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </CustomQueryClientProvider>
-              </LoadingProvider>
-            </SnackbarProvider>
-          </DialogProvider>
-        </LocalizationProvider>
-      </ThemeProvider>
-    </StyledEngineProvider>,
-    document.getElementById("root")
-  );
+  const Root = () => {
+    const [darkMode, setDarkMode] = useState(() => {
+      const saved = localStorage.getItem('darkMode');
+      return saved ? JSON.parse(saved) : false;
+    });
+
+    React.useEffect(() => {
+      const handleStorageChange = (e) => {
+        if (e.key === 'darkMode') {
+          setDarkMode(JSON.parse(e.newValue));
+        }
+      };
+      window.addEventListener('storage', handleStorageChange);
+      return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
+    return (
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={darkMode ? darkTheme : theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+            <DialogProvider>
+              <SnackbarProvider maxSnack={1}>
+                <LoadingProvider>
+                  <CustomQueryClientProvider>
+                    <CssBaseline />
+                    <PostMessage>
+                      <App />
+                    </PostMessage>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                  </CustomQueryClientProvider>
+                </LoadingProvider>
+              </SnackbarProvider>
+            </DialogProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
+    );
+  };
+
+  ReactDOM.render(<Root />, document.getElementById("root"));
 }
 
 initKeycloak().then(renderApp);

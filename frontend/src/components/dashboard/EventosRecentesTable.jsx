@@ -11,6 +11,7 @@ import {
   Typography,
   Box,
   Skeleton,
+  Button,
 } from '@mui/material';
 import {
   Business as BusinessIcon,
@@ -22,6 +23,7 @@ import {
   Error as ErrorIcon,
   Schedule as ScheduleIcon,
   Warning as WarningIcon,
+  Download as DownloadIcon,
 } from '@mui/icons-material';
 
 const getStatusIcon = (status) => {
@@ -103,6 +105,34 @@ const formatarDocumento = (cpfCnpj) => {
 };
 
 export function EventosRecentesTable({ eventos, loading }) {
+  const handleExportCSV = () => {
+    if (!eventos || eventos.length === 0) return;
+
+    const headers = ['Data/Hora', 'Tipo Evento', 'Documento', 'Status', 'Lote'];
+    const rows = eventos.map(evento => [
+      evento.dataHoraOcorrencia || '',
+      evento.tipoEvento || '',
+      evento.cpfCnpjTrabalhador || evento.cpfCnpjEmpresa || '',
+      evento.estado || '',
+      evento.numeroLote || ''
+    ]);
+
+    const csvContent = [
+      headers.join(';'),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(';'))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `eventos_esocial_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return (
       <Box sx={{ width: '100%', overflow: 'hidden' }}>
@@ -133,8 +163,20 @@ export function EventosRecentesTable({ eventos, loading }) {
   }
 
   return (
-    <Box sx={{ width: '100%', overflow: 'auto' }}>
-      <Table size="small" sx={{ minWidth: 650 }}>
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button
+          variant="outlined"
+          startIcon={<DownloadIcon />}
+          onClick={handleExportCSV}
+          disabled={eventos.length === 0}
+          size="small"
+        >
+          Exportar CSV
+        </Button>
+      </Box>
+      <Box sx={{ overflow: 'auto' }}>
+        <Table size="small" sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
             <Tooltip title="Data e hora do processamento">
