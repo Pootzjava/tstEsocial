@@ -1,74 +1,71 @@
 package br.jus.tst.esocialjt.relatorio;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import br.jus.tst.esocialjt.dashboard.DashboardHistoricoApuracaoDTO;
+import br.jus.tst.esocialjt.dashboard.DashboardServico;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import net.sf.jasperreports.engine.JRException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/relatorios")
-@Tag(name = "Relatórios", description = "API para geração de relatórios em PDF e CSV")
+@CrossOrigin(origins = "*")
 public class RelatorioController {
 
     @Autowired
     private RelatorioService relatorioService;
 
-    /**
-     * Gera e retorna PDF com relatório de apuração da folha
-     */
-    @GetMapping("/apuracao")
-    @Operation(summary = "Baixar PDF de Apuração", description = "Gera relatório PDF com totais de apuração no período")
-    public ResponseEntity<byte[]> baixarRelatorioApuracao(
-            @RequestParam String inicio,
-            @RequestParam String fim,
-            @RequestParam(required = false) String tenant) {
+    @Autowired
+    private DashboardServico dashboardServico;
 
+    @GetMapping(value = "/apuracao/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> gerarRelatorioApuracao(
+            @RequestParam(required = false) String periodoInicio,
+            @RequestParam(required = false) String periodoFim,
+            @RequestHeader(value = "X-Tenant-ID", required = false) String tenantId) {
+        
         try {
-            LocalDate dataInicio = LocalDate.parse(inicio, DateTimeFormatter.ISO_LOCAL_DATE);
-            LocalDate dataFim = LocalDate.parse(fim, DateTimeFormatter.ISO_LOCAL_DATE);
-
-            byte[] pdfBytes = relatorioService.gerarRelatorioApuracaoPDF(dataInicio, dataFim, tenant);
-
+            LocalDate inicio = periodoInicio != null ? 
+                LocalDate.parse(periodoInicio, DateTimeFormatter.ISO_LOCAL_DATE) : 
+                LocalDate.now().minusMonths(6);
+            
+            LocalDate fim = periodoFim != null ? 
+                LocalDate.parse(periodoFim, DateTimeFormatter.ISO_LOCAL_DATE) : 
+                LocalDate.now();
+            
+            List<DashboardHistoricoApuracaoDTO> dados = dashboardServico.buscarHistoricoApuracao(
+                inicio.toString(), 
+                fim.toString()
+            );
+            
+            byte[] pdfContent = relatorioService.gerarRelatorioApuracaoPDF(
+                dados, 
+                periodoInicio != null ? periodoInicio : inicio.toString(),
+                periodoFim != null ? periodoFim : fim.toString(),
+                tenantId != null ? tenantId : "default"
+            );
+            
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", "relatorio_apuracao_" + inicio + "_a_" + fim + ".pdf");
-            headers.setContentLength(pdfBytes.length);
-
+            headers.setContentDispositionFormData("attachment", "relatorio_apuracao_" + LocalDate.now() + ".pdf");
+            headers.setContentLength(pdfContent.length);
+            
             return ResponseEntity.ok()
                     .headers(headers)
-                    .body(pdfBytes);
-
-        } catch (DateTimeParseException e) {
-            return ResponseEntity.badRequest().build();
+                    .body(pdfContent);
+                    
         } catch (JRException e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
-    }
-
-    /**
-     * Gera e retorna CSV com validações de folha
-     */
-    @GetMapping("/validacoes")
-    @Operation(summary = "Baixar CSV de Validações", description = "Exporta validações de folha em formato CSV")
-    public ResponseEntity<String> baixarValidacoesCSV() {
-        // TODO: Implementar quando serviço de validações estiver completo
-        String csv = relatorioService.gerarValidacoesCSV(java.util.Collections.emptyList());
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setContentDispositionFormData("attachment", "validacoes_folha.csv");
-        
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(csv);
     }
 }

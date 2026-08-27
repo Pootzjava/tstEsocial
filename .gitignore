@@ -1,43 +1,75 @@
 ```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+*.class
+*.exe
+*.dll
+*.so
+*.a
+*.out
+
 # Dependencies
 node_modules/
-**/node_modules/
-
-# Package lock files
-package-lock.json
-yarn.lock
-
-# Build outputs
-dist/
-build/
-*.min.js
-*.bundle.js
-
-# Environment
+venv/
+.venv/
 .env
 .env.local
 .env.*
 
-# Logs
+# Logs and temp files
 *.log
-
-# Editor
-.vscode/
-.idea/
+*.tmp
 *.swp
 *.swo
 
-# OS
-.DS_Store
-Thumbs.db
+# Editors
+.vscode/
+.idea/
 
-# Python (if applicable)
-__pycache__/
+# Build directories
+dist/
+build/
+target/
+.gradle/
+
+# Python specific
 *.pyc
+__pycache__/
 *.pyo
 *.pyd
 .Python
-venv/
+env/
 .venv/
-.env/
+venv/
+ENV/
+
+# Java specific
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+!*.java
+!*.properties
+!*.xml
+!*.yml
+!*.yaml
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Testing
+.mypy_cache/
+.pytest_cache/
+.nyc_output/
+coverage/
+
+# OS generated files
+.DS_Store
+Thumbs.db
 ```

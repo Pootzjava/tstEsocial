@@ -6,6 +6,7 @@ import DashboardCharts from './DashboardCharts';
 import UltimosEventosTable from './UltimosEventosTable';
 import PeriodoFiltro from '../../components/dashboard/PeriodoFiltro';
 import DashboardHeader from '../../components/dashboard/DashboardHeader';
+import RelatorioActions from '../../components/dashboard/RelatorioActions';
 import useDarkMode from '../../hooks/useDarkMode';
 
 const DashboardPage = () => {
@@ -88,6 +89,14 @@ const DashboardPage = () => {
           periodoFim={periodoFim}
           onApply={handleApplyFilter}
         />
+        
+        {/* Ações de Relatório */}
+        <Box mt={2}>
+          <RelatorioActions 
+            periodoInicio={periodoInicio ? periodoInicio.format('YYYY-MM-DD') : null}
+            periodoFim={periodoFim ? periodoFim.format('YYYY-MM-DD') : null}
+          />
+        </Box>
       </Box>
 
       {/* Gráficos */}
