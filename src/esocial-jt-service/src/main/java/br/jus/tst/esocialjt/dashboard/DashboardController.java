@@ -1,6 +1,6 @@
 package br.jus.tst.esocialjt.dashboard;
 
-import br.jus.tst.esocialjt.multitenant.CertificadoDinamicoService;
+import br.jus.tst.esocialjt.certificado.negocio.CertificadoDinamicoService;
 import br.jus.tst.esocialjt.tenant.TenantContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

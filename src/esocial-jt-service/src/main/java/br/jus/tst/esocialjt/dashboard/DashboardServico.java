@@ -5,7 +5,7 @@ import br.jus.tst.esocialjt.dominio.Evento;
 import br.jus.tst.esocialjt.dominio.GrupoTipoEvento;
 import br.jus.tst.esocialjt.dominio.Lote;
 import br.jus.tst.esocialjt.evento.ApuracaoEsocialRepository;
-import br.jus.tst.esocialjt.multitenant.CertificadoDinamicoService;
+import br.jus.tst.esocialjt.certificado.negocio.CertificadoDinamicoService;
 import br.jus.tst.esocialjt.negocio.ConsultaEvento;
 import br.jus.tst.esocialjt.negocio.EventoServico;
 import br.jus.tst.esocialjt.ret.eventos50xx.RetornoApuracaoDTO;

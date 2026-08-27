@@ -11,7 +11,7 @@ import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
 
 import br.jus.tst.esocialjt.TipoAmbiente;
-import br.jus.tst.esocialjt.multitenant.CertificadoDinamicoService;
+import br.jus.tst.esocialjt.certificado.negocio.CertificadoDinamicoService;
 
 import java.security.KeyStore;
 import javax.net.ssl.KeyManagerFactory;

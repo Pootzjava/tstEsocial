@@ -27,7 +27,9 @@ import static org.mockito.Mockito.when;
  * Teste unitário para o método calcularTotaisApuracao() do DashboardServico.
  * Valida que os totais de FGTS, IRRF e Contribuição Previdenciária são calculados corretamente.
  */
-@SpringBootTest
+@SpringBootTest(properties = {
+    "esocialjt.comunicacao-gov.enabled=false"
+})
 @ActiveProfiles("test")
 @DBRider
 class DashboardServicoTest {

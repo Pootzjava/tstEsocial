@@ -1,6 +1,7 @@
 package br.jus.tst.esocialjt.certificado.negocio;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * DTO para armazenar dados do certificado digital de um tenant.
@@ -19,7 +20,8 @@ public class TenantCertificadoDTO implements Serializable {
     private String caminhoArquivo; // Para certificados A3 (arquivo físico)
     private String caminhoCacerts;
     private String senhaCacerts = "changeit";
-    private String dataValidade;
+    private LocalDateTime dataValidade;
+    private String numeroSerie;
     private boolean ativo = true;
 
     public TenantCertificadoDTO() {
@@ -60,8 +62,11 @@ public class TenantCertificadoDTO implements Serializable {
     public String getSenhaCacerts() { return senhaCacerts; }
     public void setSenhaCacerts(String senhaCacerts) { this.senhaCacerts = senhaCacerts; }
 
-    public String getDataValidade() { return dataValidade; }
-    public void setDataValidade(String dataValidade) { this.dataValidade = dataValidade; }
+    public LocalDateTime getDataValidade() { return dataValidade; }
+    public void setDataValidade(LocalDateTime dataValidade) { this.dataValidade = dataValidade; }
+
+    public String getNumeroSerie() { return numeroSerie; }
+    public void setNumeroSerie(String numeroSerie) { this.numeroSerie = numeroSerie; }
 
     public boolean isAtivo() { return ativo; }
     public void setAtivo(boolean ativo) { this.ativo = ativo; }
