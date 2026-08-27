@@ -9,9 +9,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableAsync
+@EnableCaching
 public class EsocialApplication extends SpringBootServletInitializer  {
 
 	public static void main(String[] args) {
