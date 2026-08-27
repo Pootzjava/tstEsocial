@@ -25,7 +25,8 @@
     "react-query": "^3.34.8",
     "react-resize-detector": "^7.0.0",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0"
+    "react-scripts": "5.0.0",
+    "recharts": "^3.10.1"
   },
   "scripts": {
     "prestart": "node app-info-gen.js && node app-env-gen.js",
