@@ -188,11 +188,11 @@ public class DashboardServico {
             // Conta retornos S-5010 processados com sucesso
             String jpqlS5010 = "SELECT COUNT(e) FROM Evento e " +
                               "WHERE e.tipoEvento.id = :tipo " +
-                              "AND e.estado.codigo = :estado";
+                              "AND e.estado.id = :estado";
             
             Long totalS5010 = (Long) entityManager.createQuery(jpqlS5010)
                     .setParameter("tipo", 5010L)
-                    .setParameter("estado", Estado.PROCESSADO_COM_SUCESSO.getCodigo())
+                    .setParameter("estado", Estado.PROCESSADO_COM_SUCESSO.getId())
                     .getSingleResult();
             
             dto.setTotalRetornosS5010(totalS5010);
@@ -200,7 +200,7 @@ public class DashboardServico {
             // Conta retornos S-5020 processados com sucesso
             Long totalS5020 = (Long) entityManager.createQuery(jpqlS5010)
                     .setParameter("tipo", 5020L)
-                    .setParameter("estado", Estado.PROCESSADO_COM_SUCESSO.getCodigo())
+                    .setParameter("estado", Estado.PROCESSADO_COM_SUCESSO.getId())
                     .getSingleResult();
             
             dto.setTotalRetornosS5020(totalS5020);
@@ -375,13 +375,11 @@ public class DashboardServico {
             
             for (Object[] resultado : resultados) {
                 LocalDate competencia = (LocalDate) resultado[0];
-                String tipoEvento = (String) resultado[1];
                 BigDecimal valorTotal = (BigDecimal) resultado[2];
                 
                 ranking.add(DashboardHistoricoApuracaoDTO.HistoricoMensalDTO.builder()
                     .competencia(competencia.toString())
-                    .tipoEvento(tipoEvento)
-                    .valorTotal(valorTotal != null ? valorTotal.doubleValue() : 0.0)
+                    .valorFGTS(valorTotal != null ? valorTotal.doubleValue() : 0.0)
                     .build());
             }
             
@@ -411,7 +409,7 @@ public class DashboardServico {
         Long procErro = dto.getTotalEventosProcessadoComErro() != null ? dto.getTotalEventosProcessadoComErro() : 0L;
 
         double percentualSucesso = (sucesso.doubleValue() / total.doubleValue()) * 100;
-        double percentualErro = ((erro + procErro).doubleValue() / total.doubleValue()) * 100;
+        double percentualErro = ((erro.doubleValue() + procErro.doubleValue()) / total.doubleValue()) * 100;
 
         dto.setPercentualSucesso(Math.round(percentualSucesso * 100.0) / 100.0);
         dto.setPercentualErro(Math.round(percentualErro * 100.0) / 100.0);

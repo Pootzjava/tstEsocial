@@ -47,7 +47,7 @@ class DashboardServicoTest {
     @BeforeEach
     void setUp() {
         // Configura tenant mockado para todos os testes
-        TenantContext.setTenantId("tenant-teste");
+        TenantContext.setTenantIdStatic("tenant-teste");
     }
 
     @Test
@@ -74,7 +74,7 @@ class DashboardServicoTest {
         };
 
         when(apuracaoRepository.buscarTotaisPorCompetencia(any(LocalDate.class), any(LocalDate.class)))
-                .thenReturn(List.of(resultado1, resultado2));
+                .thenReturn(List.<Object[]>of(resultado1, resultado2));
 
         try (MockedStatic<TenantContext> mockedContext = mockStatic(TenantContext.class)) {
             mockedContext.when(TenantContext::getTenantIdStatic).thenReturn("tenant-teste");
@@ -104,7 +104,7 @@ class DashboardServicoTest {
     void deveRetornarZerosQuandoNaoHaDados() {
         // Given - Sem dados de apuração
         when(apuracaoRepository.buscarTotaisPorCompetencia(any(LocalDate.class), any(LocalDate.class)))
-                .thenReturn(List.of());
+                .thenReturn(List.<Object[]>of());
 
         try (MockedStatic<TenantContext> mockedContext = mockStatic(TenantContext.class)) {
             mockedContext.when(TenantContext::getTenantIdStatic).thenReturn("tenant-teste");
@@ -133,7 +133,7 @@ class DashboardServicoTest {
         };
 
         when(apuracaoRepository.buscarTotaisPorCompetencia(any(LocalDate.class), any(LocalDate.class)))
-                .thenReturn(List.of(resultadoComNull));
+                .thenReturn(List.<Object[]>of(resultadoComNull));
 
         try (MockedStatic<TenantContext> mockedContext = mockStatic(TenantContext.class)) {
             mockedContext.when(TenantContext::getTenantIdStatic).thenReturn("tenant-teste");
