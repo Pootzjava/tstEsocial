@@ -20,7 +20,8 @@ import java.util.Optional;
  * 
  * @author eSocial-JT
  */
-@Service
+@Service("certificadoDinamicoServiceMultitenant")
+@Deprecated
 public class CertificadoDinamicoService {
 
     @Autowired

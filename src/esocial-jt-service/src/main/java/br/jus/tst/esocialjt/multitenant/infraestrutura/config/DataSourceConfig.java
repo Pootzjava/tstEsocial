@@ -27,7 +27,7 @@ import java.util.Map;
  * 
  * @author Analista de Sistemas Sênior - Especialista eSocial
  */
-@Configuration
+@Configuration("multitenantDataSourceConfig")
 public class DataSourceConfig {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceConfig.class);
@@ -54,7 +54,7 @@ public class DataSourceConfig {
     }
 
     @Bean(name = "defaultDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @Configuration("multitenantDataSourceConfig")Properties(prefix = "spring.datasource")
     public DataSource defaultDataSource() {
         log.info("Criando DataSource padrão para PostgreSQL");
         return DataSourceBuilder.create().build();

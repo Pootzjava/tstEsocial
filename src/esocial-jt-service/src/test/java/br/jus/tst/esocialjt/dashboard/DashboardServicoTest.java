@@ -1,17 +1,18 @@
 package br.jus.tst.esocialjt.dashboard;
 
+import br.jus.tst.esocialjt.certificado.negocio.CertificadoDinamicoService;
 import br.jus.tst.esocialjt.dominio.ApuracaoEsocial;
 import br.jus.tst.esocialjt.evento.ApuracaoEsocialRepository;
-import br.jus.tst.esocialjt.multitenant.CertificadoDinamicoService;
 import br.jus.tst.esocialjt.negocio.EventoServico;
 import br.jus.tst.esocialjt.tenant.TenantContext;
+import com.github.database.rider.spring.api.DBRider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,20 +27,22 @@ import static org.mockito.Mockito.when;
  * Teste unitário para o método calcularTotaisApuracao() do DashboardServico.
  * Valida que os totais de FGTS, IRRF e Contribuição Previdenciária são calculados corretamente.
  */
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@ActiveProfiles("test")
+@DBRider
 class DashboardServicoTest {
 
-    @Mock
+    @Autowired
+    private DashboardServico dashboardServico;
+
+    @MockBean
     private EventoServico eventoServico;
 
-    @Mock
+    @MockBean
     private CertificadoDinamicoService certificadoService;
 
-    @Mock
+    @MockBean
     private ApuracaoEsocialRepository apuracaoRepository;
-
-    @InjectMocks
-    private DashboardServico dashboardServico;
 
     private final LocalDate hoje = LocalDate.now();
     private final LocalDate inicioPeriodo = hoje.minusMonths(12);
