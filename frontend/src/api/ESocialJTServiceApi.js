@@ -142,3 +142,17 @@ export function useExemploOcorrencia(tipo) {
     enabled: !!tipo
   });
 }
+
+export function useDashboardTotais() {
+  return useQuery(`/dashboard/totais`, queryFetcher, {
+    refetchInterval: REFRESH_INTERVAL,
+    enabled: true
+  });
+}
+
+export function useDashboardHistoricoApuracao() {
+  return useQuery(`/dashboard/historico-apuracao`, queryFetcher, {
+    refetchInterval: REFRESH_INTERVAL * 2,
+    enabled: true
+  });
+}
