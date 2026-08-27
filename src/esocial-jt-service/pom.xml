@@ -39,6 +39,25 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+                
+                <!-- Drools Rules Engine para filas priorit\u00e1rias -->
+                <dependency>
+                        <groupId>org.drools</groupId>
+                        <artifactId>drools-core</artifactId>
+                        <version>9.44.0.Final</version>
+                </dependency>
+                <dependency>
+                        <groupId>org.drools</groupId>
+                        <artifactId>drools-compiler</artifactId>
+                        <version>9.44.0.Final</version>
+                </dependency>
+                
+                <!-- Caffeine Cache para otimiza\u00e7\u00e3o -->
+                <dependency>
+                        <groupId>com.github.ben-manes.caffeine</groupId>
+                        <artifactId>caffeine</artifactId>
+                        <version>3.1.8</version>
+                </dependency>
 		</dependencies>
 	</dependencyManagement>
 
