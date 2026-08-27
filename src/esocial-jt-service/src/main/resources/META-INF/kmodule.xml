@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
+    
+    <!-- KBase para regras de prioridade de eventos -->
+    <kbase name="prioridadeKBase" packages="rules">
+        <ksession name="rulesSession" type="stateful"/>
+    </kbase>
+    
+    <!-- KBase para validações de folha -->
+    <kbase name="validacaoFolhaKBase" packages="rules.validacao">
+        <ksession name="validationSession" type="stateful"/>
+    </kbase>
+    
+</kmodule>
