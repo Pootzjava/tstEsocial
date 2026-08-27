@@ -2,74 +2,42 @@
 # Dependencies
 node_modules/
 **/node_modules/
-target/
-**/target/
 
-# Build artifacts
-dist/
-**/dist/
-build/
-**/build/
-
-# Package lock files (already in changes)
+# Package lock files
 package-lock.json
 yarn.lock
 
-# Java build/cache
-*.class
-**/*.class
-.m2/
-**/.m2/
-.gradle/
-**/.gradle/
-
-# Logs
-*.log
-**/*.log
+# Build outputs
+dist/
+build/
+*.min.js
+*.bundle.js
 
 # Environment
 .env
 .env.local
-**/.env
-**/.env.local
+.env.*
 
-# IDE
+# Logs
+*.log
+
+# Editor
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Coverage
-coverage/
-**/coverage/
-.htmlcov/
-**/.htmlcov/
-.coverage
-**/.coverage
-
-# Python cache
-__pycache__/
-**/__pycache__/
-*.pyc
-**/*.pyc
-.Python
-**/.Python
-*.pyo
-**/*.pyo
-*.pyd
-**/*.pyd
-*.so
-**/*.so
-*.egg-info/
-**/*.egg-info/
-
-# Reports (generated)
-*.jrprint
-**/*.jrprint
-*.jasper
-**/*.jasper
-
 # OS
 .DS_Store
 Thumbs.db
+
+# Python (if applicable)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+.env/
 ```
