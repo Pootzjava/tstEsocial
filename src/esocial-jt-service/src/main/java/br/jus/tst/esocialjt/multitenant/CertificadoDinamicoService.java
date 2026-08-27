@@ -1,5 +1,6 @@
 package br.jus.tst.esocialjt.multitenant;
 
+import br.jus.tst.esocialjt.certificado.repositorio.TenantCertificadoRepository;
 import br.jus.tst.esocialjt.negocio.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

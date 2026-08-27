@@ -4,24 +4,17 @@
 *.o
 *.obj
 *.out
-*.dll
-*.so
-*.a
-
 # Dependencies
 target/
 .gradle/
-
 # Logs and temp files
 *.log
 *.tmp
-
-# Environment
-.env
-.env.local
-*.env.*
-
 # Editors
 .vscode/
 .idea/
+# Coverage
+coverage/
+htmlcov/
+.coverage
 ```

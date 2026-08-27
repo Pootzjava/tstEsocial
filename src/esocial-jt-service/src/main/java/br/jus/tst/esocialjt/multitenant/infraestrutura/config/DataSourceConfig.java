@@ -54,7 +54,7 @@ public class DataSourceConfig {
     }
 
     @Bean(name = "defaultDataSource")
-    @Configuration("multitenantDataSourceConfig")Properties(prefix = "spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource defaultDataSource() {
         log.info("Criando DataSource padrão para PostgreSQL");
         return DataSourceBuilder.create().build();

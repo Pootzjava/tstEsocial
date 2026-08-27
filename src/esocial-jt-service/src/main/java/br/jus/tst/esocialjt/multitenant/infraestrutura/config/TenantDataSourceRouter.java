@@ -4,33 +4,33 @@ import br.jus.tst.esocialjt.tenant.TenantContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-import org.springframework.stereotype.Component;
 
 /**
- * Implementação de roteamento dinâmico de DataSource baseado no tenant atual.
+ * Implementação de DataSource dinâmico para roteamento por tenant.
+ * Cada requisição usa o schema PostgreSQL associado ao tenant ativo.
  * 
  * Estratégia: Schema-per-tenant no PostgreSQL
- * - Cada tenant possui um schema dedicado no mesmo banco de dados
- * - O routing é feito via ThreadLocal (TenantContext)
- * - O search_path do PostgreSQL é alterado dinamicamente
- * 
- * @author Analista de Sistemas Sênior - Especialista eSocial
+ * - Vantagens: Isolamento lógico de dados, custo otimizado, backup por schema
+ * - Schema naming: tenant_<id> em lowercase
  */
-@Component
 public class TenantDataSourceRouter extends AbstractRoutingDataSource {
 
-    private static final Logger log = LoggerFactory.getLogger(TenantDataSourceRouter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TenantDataSourceRouter.class);
+
+    public TenantDataSourceRouter() {
+        // Construtor padrão para evitar dependência circular
+    }
 
     @Override
     protected Object determineCurrentLookupKey() {
-        String tenantId = TenantContext.getTenantIdStatic();
+        String schemaName = TenantContext.getSchemaNameStatic();
         
-        if (tenantId == null || tenantId.isBlank()) {
-            log.warn("TenantId não definido no contexto. Usando schema 'public' como fallback.");
-            return "public";
+        if (schemaName == null) {
+            LOGGER.debug("Não há tenant ativo no contexto - usando datasource default");
+            return "default";
         }
         
-        log.debug("Roteando conexão para o tenant/schema: {}", tenantId);
-        return tenantId;
+        LOGGER.debug("Roteando para schema do tenant: {}", schemaName);
+        return schemaName;
     }
 }
