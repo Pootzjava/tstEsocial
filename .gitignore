@@ -4,19 +4,20 @@
 *.o
 *.obj
 *.out
-build/
-target/
+*.dll
+*.so
+*.a
+*.exe
 
 # Dependencies
+target/
 .gradle/
 .mypy_cache/
 .pytest_cache/
-__pycache__/
 node_modules/
 venv/
 .venv/
-.julia/
-zig*/
+__pycache__/
 
 # Logs and temp files
 *.log
@@ -33,36 +34,10 @@ zig*/
 .vscode/
 .idea/
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Coverage
+# Build and distribution
+dist/
+build/
 coverage/
 htmlcov/
-.coverage
-
-# Archives
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+*.pyc
 ```

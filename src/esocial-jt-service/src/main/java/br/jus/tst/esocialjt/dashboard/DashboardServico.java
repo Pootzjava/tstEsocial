@@ -4,6 +4,7 @@ import br.jus.tst.esocialjt.dominio.Estado;
 import br.jus.tst.esocialjt.dominio.Evento;
 import br.jus.tst.esocialjt.dominio.GrupoTipoEvento;
 import br.jus.tst.esocialjt.dominio.Lote;
+import br.jus.tst.esocialjt.evento.ApuracaoEsocialRepository;
 import br.jus.tst.esocialjt.multitenant.CertificadoDinamicoService;
 import br.jus.tst.esocialjt.negocio.ConsultaEvento;
 import br.jus.tst.esocialjt.negocio.EventoServico;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +36,9 @@ public class DashboardServico {
 
     @Autowired
     private CertificadoDinamicoService certificadoService;
+
+    @Autowired
+    private ApuracaoEsocialRepository apuracaoRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -90,11 +95,11 @@ public class DashboardServico {
         dto.setTotalEventos(totalEventos);
 
         // Por estado
-        dto.setTotalEventosEmFila(contarEventosPorEstado(Estado.EM_FILA.getCodigo()));
-        dto.setTotalEventosEmProcessamento(contarEventosPorEstado(Estado.PROCESSAMENTO.getCodigo()));
-        dto.setTotalEventosSucesso(contarEventosPorEstado(Estado.PROCESSADO_COM_SUCESSO.getCodigo()));
-        dto.setTotalEventosErro(contarEventosPorEstado(Estado.ERRO.getCodigo()));
-        dto.setTotalEventosProcessadoComErro(contarEventosPorEstado(Estado.PROCESSADO_COM_ERRO.getCodigo()));
+        dto.setTotalEventosEmFila(contarEventosPorEstado(Estado.EM_FILA.getId()));
+        dto.setTotalEventosEmProcessamento(contarEventosPorEstado(Estado.PROCESSAMENTO.getId()));
+        dto.setTotalEventosSucesso(contarEventosPorEstado(Estado.PROCESSADO_COM_SUCESSO.getId()));
+        dto.setTotalEventosErro(contarEventosPorEstado(Estado.ERRO.getId()));
+        dto.setTotalEventosProcessadoComErro(contarEventosPorEstado(Estado.PROCESSADO_COM_ERRO.getId()));
 
         // Por grupo de evento
         dto.setTotalEventosTabela(contarEventosPorGrupo(1L));
@@ -121,23 +126,23 @@ public class DashboardServico {
         Long totalLotes = (Long) entityManager.createQuery(jpql).getSingleResult();
         dto.setTotalLotes(totalLotes);
 
-        jpql = "SELECT COUNT(l) FROM Lote l WHERE l.estado.codigo = :estado";
+        jpql = "SELECT COUNT(l) FROM Lote l WHERE l.estado.id = :estado";
         
         // Lotes em processamento
         List<Long> emProcessamento = entityManager.createQuery(jpql, Long.class)
-                .setParameter("estado", Estado.PROCESSAMENTO.getCodigo())
+                .setParameter("estado", Estado.PROCESSAMENTO.getId())
                 .getResultList();
         dto.setTotalLotesEmProcessamento(emProcessamento.isEmpty() ? 0L : emProcessamento.get(0));
 
         // Lotes com sucesso
         List<Long> sucesso = entityManager.createQuery(jpql, Long.class)
-                .setParameter("estado", Estado.PROCESSADO_COM_SUCESSO.getCodigo())
+                .setParameter("estado", Estado.PROCESSADO_COM_SUCESSO.getId())
                 .getResultList();
         dto.setTotalLotesSucesso(sucesso.isEmpty() ? 0L : sucesso.get(0));
 
         // Lotes com erro
         List<Long> erro = entityManager.createQuery(jpql, Long.class)
-                .setParameter("estado", Estado.PROCESSADO_COM_ERRO.getCodigo())
+                .setParameter("estado", Estado.PROCESSADO_COM_ERRO.getId())
                 .getResultList();
         dto.setTotalLotesErro(erro.isEmpty() ? 0L : erro.get(0));
     }
@@ -147,18 +152,22 @@ public class DashboardServico {
      */
     private void carregarInformacoesCertificado(DashboardEstatisticasDTO dto) {
         try {
-            boolean existeCertificado = certificadoService.existeCertificadoAtivo();
+            String tenantId = TenantContext.getTenantIdStatic();
+            boolean existeCertificado = certificadoService.possuiCertificadoAtivo(tenantId);
             dto.setCertificadoAtivo(existeCertificado);
 
             if (existeCertificado) {
-                var certInfo = certificadoService.obterInformacoesCertificado();
-                dto.setNumeroSerieCertificado(certInfo.getNumeroSerie());
-                
-                LocalDate dataVencimento = certInfo.getDataVencimento();
-                if (dataVencimento != null) {
-                    int diasParaVencimento = (int) java.time.temporal.ChronoUnit.DAYS.between(
-                            LocalDate.now(), dataVencimento);
-                    dto.setDiasParaVencimentoCertificado(diasParaVencimento);
+                var certInfo = certificadoService.getCertificadoInfo();
+                if (certInfo != null) {
+                    dto.setNumeroSerieCertificado(certInfo.getNumeroSerie());
+                    
+                    LocalDate dataVencimento = certInfo.getDataValidade() != null ? 
+                        certInfo.getDataValidade().toLocalDate() : null;
+                    if (dataVencimento != null) {
+                        int diasParaVencimento = (int) java.time.temporal.ChronoUnit.DAYS.between(
+                                LocalDate.now(), dataVencimento);
+                        dto.setDiasParaVencimentoCertificado(diasParaVencimento);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -221,14 +230,56 @@ public class DashboardServico {
     
     /**
      * Calcula totais de apuração a partir dos eventos processados.
+     * Busca valores reais da tabela de apurações consolidadas.
      * @return Array [totalFGTS, totalIRRF, totalContribuicaoPrevidenciaria]
      */
     private Double[] calcularTotaisApuracao() {
-        // Implementação futura: buscar da tabela de consolidação de apurações
-        // Ou fazer parse dos XMLs de retorno armazenados
-        
-        // Placeholder - retorna zeros até implementação completa do parser S-50XX
-        return new Double[]{0.0, 0.0, 0.0};
+        try {
+            // Define período dos últimos 12 meses
+            LocalDate hoje = LocalDate.now();
+            LocalDate inicioPeriodo = hoje.minusMonths(12);
+            
+            // Busca totais consolidados do banco de dados
+            List<Object[]> resultados = apuracaoRepository.buscarTotaisPorCompetencia(inicioPeriodo, hoje);
+            
+            BigDecimal totalFGTS = BigDecimal.ZERO;
+            BigDecimal totalIRRF = BigDecimal.ZERO;
+            BigDecimal totalContribPrev = BigDecimal.ZERO;
+            
+            for (Object[] resultado : resultados) {
+                //resultado[0] = competencia
+                BigDecimal baseFgts = (BigDecimal) resultado[1];
+                BigDecimal fgtsMensal = (BigDecimal) resultado[2];
+                BigDecimal irrf = (BigDecimal) resultado[4];
+                BigDecimal contribPrevPatronal = (BigDecimal) resultado[6];
+                
+                if (baseFgts != null) {
+                    totalFGTS = totalFGTS.add(baseFgts);
+                }
+                if (fgtsMensal != null) {
+                    totalFGTS = totalFGTS.add(fgtsMensal);
+                }
+                if (irrf != null) {
+                    totalIRRF = totalIRRF.add(irrf);
+                }
+                if (contribPrevPatronal != null) {
+                    totalContribPrev = totalContribPrev.add(contribPrevPatronal);
+                }
+            }
+            
+            log.info("Totais de apuração calculados: FGTS={}, IRRF={}, ContribPrev={}", 
+                     totalFGTS, totalIRRF, totalContribPrev);
+            
+            return new Double[]{
+                totalFGTS.doubleValue(),
+                totalIRRF.doubleValue(),
+                totalContribPrev.doubleValue()
+            };
+            
+        } catch (Exception e) {
+            log.error("Erro ao calcular totais de apuração: {}", e.getMessage(), e);
+            return new Double[]{0.0, 0.0, 0.0};
+        }
     }
 
     /**
@@ -243,18 +294,64 @@ public class DashboardServico {
         log.info("Gerando histórico de apuração para tenant {} no período {} a {}", 
                  tenantId, dataInicio, dataFim);
         
-        // Em implementação futura, buscar dados reais do banco
-        // Por enquanto, retorna estrutura vazia
-        return DashboardHistoricoApuracaoDTO.builder()
-                .tenantId(tenantId)
-                .historicoMensal(List.of())
-                .totalGeralFGTS(0.0)
-                .totalGeralIRRF(0.0)
-                .totalGeralContribuicaoPrevidenciaria(0.0)
-                .quantidadeMesesAnalisados(0)
-                .periodoInicio(dataInicio != null ? dataInicio.toString() : "N/A")
-                .periodoFim(dataFim != null ? dataFim.toString() : "N/A")
-                .build();
+        try {
+            // Busca dados reais do banco
+            List<Object[]> resultados = apuracaoRepository.buscarTotaisPorCompetencia(dataInicio, dataFim);
+            
+            BigDecimal totalGeralFGTS = BigDecimal.ZERO;
+            BigDecimal totalGeralIRRF = BigDecimal.ZERO;
+            BigDecimal totalGeralContribPrev = BigDecimal.ZERO;
+            
+            List<DashboardHistoricoApuracaoDTO.HistoricoMensalDTO> historicoMensal = new java.util.ArrayList<>();
+            
+            for (Object[] resultado : resultados) {
+                LocalDate competencia = (LocalDate) resultado[0];
+                BigDecimal baseFgts = (BigDecimal) resultado[1];
+                BigDecimal fgtsMensal = (BigDecimal) resultado[2];
+                BigDecimal baseIrrf = (BigDecimal) resultado[3];
+                BigDecimal irrf = (BigDecimal) resultado[4];
+                BigDecimal baseContribPrev = (BigDecimal) resultado[5];
+                BigDecimal contribPrevPatronal = (BigDecimal) resultado[6];
+                
+                BigDecimal fgtsTotal = (baseFgts != null ? baseFgts : BigDecimal.ZERO)
+                                     .add(fgtsMensal != null ? fgtsMensal : BigDecimal.ZERO);
+                
+                totalGeralFGTS = totalGeralFGTS.add(fgtsTotal);
+                totalGeralIRRF = totalGeralIRRF.add(irrf != null ? irrf : BigDecimal.ZERO);
+                totalGeralContribPrev = totalGeralContribPrev.add(contribPrevPatronal != null ? contribPrevPatronal : BigDecimal.ZERO);
+                
+                historicoMensal.add(DashboardHistoricoApuracaoDTO.HistoricoMensalDTO.builder()
+                    .competencia(competencia.toString())
+                    .valorFGTS(fgtsTotal.doubleValue())
+                    .valorIRRF(irrf != null ? irrf.doubleValue() : 0.0)
+                    .valorContribuicaoPrevidenciaria(contribPrevPatronal != null ? contribPrevPatronal.doubleValue() : 0.0)
+                    .build());
+            }
+            
+            return DashboardHistoricoApuracaoDTO.builder()
+                    .tenantId(tenantId)
+                    .historicoMensal(historicoMensal)
+                    .totalGeralFGTS(totalGeralFGTS.doubleValue())
+                    .totalGeralIRRF(totalGeralIRRF.doubleValue())
+                    .totalGeralContribuicaoPrevidenciaria(totalGeralContribPrev.doubleValue())
+                    .quantidadeMesesAnalisados(historicoMensal.size())
+                    .periodoInicio(dataInicio != null ? dataInicio.toString() : "N/A")
+                    .periodoFim(dataFim != null ? dataFim.toString() : "N/A")
+                    .build();
+                    
+        } catch (Exception e) {
+            log.error("Erro ao gerar histórico de apuração: {}", e.getMessage(), e);
+            return DashboardHistoricoApuracaoDTO.builder()
+                    .tenantId(tenantId)
+                    .historicoMensal(List.of())
+                    .totalGeralFGTS(0.0)
+                    .totalGeralIRRF(0.0)
+                    .totalGeralContribuicaoPrevidenciaria(0.0)
+                    .quantidadeMesesAnalisados(0)
+                    .periodoInicio(dataInicio != null ? dataInicio.toString() : "N/A")
+                    .periodoFim(dataFim != null ? dataFim.toString() : "N/A")
+                    .build();
+        }
     }
 
     /**
@@ -266,8 +363,34 @@ public class DashboardServico {
         
         log.info("Gerando ranking de apurações para tenant {}", tenantId);
         
-        // Em implementação futura, buscar top 10 do banco
-        return List.of();
+        try {
+            // Define período dos últimos 12 meses
+            LocalDate hoje = LocalDate.now();
+            LocalDate inicioPeriodo = hoje.minusMonths(12);
+            
+            // Busca top 10 do banco usando query nativa otimizada
+            List<Object[]> resultados = apuracaoRepository.buscarRankingApuracoes(inicioPeriodo, hoje);
+            
+            List<DashboardHistoricoApuracaoDTO.HistoricoMensalDTO> ranking = new java.util.ArrayList<>();
+            
+            for (Object[] resultado : resultados) {
+                LocalDate competencia = (LocalDate) resultado[0];
+                String tipoEvento = (String) resultado[1];
+                BigDecimal valorTotal = (BigDecimal) resultado[2];
+                
+                ranking.add(DashboardHistoricoApuracaoDTO.HistoricoMensalDTO.builder()
+                    .competencia(competencia.toString())
+                    .tipoEvento(tipoEvento)
+                    .valorTotal(valorTotal != null ? valorTotal.doubleValue() : 0.0)
+                    .build());
+            }
+            
+            return ranking;
+            
+        } catch (Exception e) {
+            log.error("Erro ao gerar ranking de apurações: {}", e.getMessage(), e);
+            return List.of();
+        }
     }
 
     /**

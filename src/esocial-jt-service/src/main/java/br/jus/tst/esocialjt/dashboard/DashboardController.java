@@ -7,11 +7,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Controller REST Premium para Dashboard Multi-tenant.
@@ -122,6 +127,63 @@ public class DashboardController {
             
         } catch (Exception e) {
             log.error("Erro ao obter resumo do dashboard", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Retorna histórico mensal de apurações para gráficos de evolução.
+     * Permite filtrar por período personalizado.
+     */
+    @GetMapping(path = "/historico-apuracao", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+        summary = "Histórico de Apurações",
+        description = "Retorna série histórica mensal de FGTS, IRRF e Contribuição Previdenciária para gráficos de evolução."
+    )
+    public ResponseEntity<DashboardHistoricoApuracaoDTO> obterHistoricoApuracao(
+            @RequestParam(required = false) 
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate dataInicio,
+            
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate dataFim) {
+        try {
+            // Se não informado, usa últimos 12 meses
+            if (dataInicio == null) {
+                dataInicio = LocalDate.now().minusMonths(12);
+            }
+            if (dataFim == null) {
+                dataFim = LocalDate.now();
+            }
+            
+            DashboardHistoricoApuracaoDTO historico = dashboardServico.gerarHistoricoApuracao(dataInicio, dataFim);
+            
+            return ResponseEntity.ok(historico);
+            
+        } catch (Exception e) {
+            log.error("Erro ao obter histórico de apuração", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Retorna ranking das maiores apurações por competência.
+     * Top 10 competências com maiores valores consolidados.
+     */
+    @GetMapping(path = "/ranking-apuracoes", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+        summary = "Ranking de Apurações",
+        description = "Retorna top 10 competências com maiores valores de apuração (FGTS + IRRF + Contribuições)."
+    )
+    public ResponseEntity<List<DashboardHistoricoApuracaoDTO.HistoricoMensalDTO>> obterRankingApuracoes() {
+        try {
+            List<DashboardHistoricoApuracaoDTO.HistoricoMensalDTO> ranking = dashboardServico.gerarRankingApuracoes();
+            
+            return ResponseEntity.ok(ranking);
+            
+        } catch (Exception e) {
+            log.error("Erro ao obter ranking de apurações", e);
             return ResponseEntity.internalServerError().build();
         }
     }
