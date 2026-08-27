@@ -1,4 +1,4 @@
-package br.jt.esocial.dominio.apuracao;
+package br.jus.tst.esocialjt.dominio;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;

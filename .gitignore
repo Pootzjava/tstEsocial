@@ -4,29 +4,25 @@
 *.o
 *.obj
 *.out
-*.exe
-*.dll
-*.so
-*.a
+build/
+target/
 
 # Dependencies
+.gradle/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
 node_modules/
 venv/
 .venv/
-__pycache__/
-.mypy_cache/
-.pytest_cache/
-target/
-.gradle/
-
-# Build directories (Java/Maven specific)
-build/
-target/
+.julia/
+zig*/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
+*.swo
 
 # Environment
 .env
@@ -37,16 +33,16 @@ target/
 .vscode/
 .idea/
 
-# System files
+# OS
 .DS_Store
 Thumbs.db
 
-# Coverage reports
+# Coverage
 coverage/
 htmlcov/
 .coverage
 
-# Compressed files
+# Archives
 *.zip
 *.gz
 *.tar
@@ -65,4 +61,8 @@ htmlcov/
 *.Z
 *.lz
 *.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 ```

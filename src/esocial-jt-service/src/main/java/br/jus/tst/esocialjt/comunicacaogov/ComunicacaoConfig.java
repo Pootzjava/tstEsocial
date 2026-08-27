@@ -14,7 +14,7 @@ import br.jus.tst.esocialjt.TipoAmbiente;
 import br.jus.tst.esocialjt.multitenant.CertificadoDinamicoService;
 
 import java.security.KeyStore;
-import java.security.KeyManagerFactory;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 @Configuration
