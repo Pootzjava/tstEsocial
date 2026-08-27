@@ -1,0 +1,123 @@
+/**
+ * Regras Drools para validação de folha de pagamento
+ *
+ * Validações implementadas:
+ * - Salário mínimo vigente
+ * - Teto do INSS
+ * - FGTS divergente
+ * - Múltiplos vínculos ativos
+ * - IRRF fora da faixa
+ */
+
+rule "Salário abaixo do mínimo"
+    when
+        $dados: DadosFolhaDTO( salarioBruto < salarioMinimoVigente )
+        $contexto: ValidacaoContexto()
+    then
+        ValidacaoErroDTO erro = new ValidacaoErroDTO();
+        erro.setTipoErro("SALARIO_MINIMO");
+        erro.setDescricao("Salário bruto inferior ao salário mínimo vigente");
+        erro.setSeveridade("CRITICA");
+        erro.setCampo("salarioBruto");
+        erro.setValorEncontrado($dados.getSalarioBruto());
+        erro.setValorEsperado($dados.getSalarioMinimoVigente());
+        $contexto.getErros().add(erro);
+        insert(erro);
+end
+
+rule "Salário acima do teto INSS"
+    when
+        $dados: DadosFolhaDTO( salarioBruto > tetoINSS )
+        $contexto: ValidacaoContexto()
+    then
+        ValidacaoErroDTO erro = new ValidacaoErroDTO();
+        erro.setTipoErro("TETO_INSS");
+        erro.setDescricao("Salário bruto superior ao teto do INSS");
+        erro.setSeveridade("ALTA");
+        erro.setCampo("salarioBruto");
+        erro.setValorEncontrado($dados.getSalarioBruto());
+        erro.setValorEsperado($dados.getTetoINSS());
+        $contexto.getErros().add(erro);
+        insert(erro);
+end
+
+rule "FGTS com alíquota incorreta"
+    when
+        $dados: DadosFolhaDTO( aliquotaFGTS != 8.0 && aliquotaFGTS != 11.2 )
+        $contexto: ValidacaoContexto()
+    then
+        ValidacaoErroDTO erro = new ValidacaoErroDTO();
+        erro.setTipoErro("FGTS_ALIQUOTA");
+        erro.setDescricao("Alíquota do FGTS divergente (esperado 8% ou 11.2%)");
+        erro.setSeveridade("MEDIA");
+        erro.setCampo("aliquotaFGTS");
+        erro.setValorEncontrado($dados.getAliquotaFGTS());
+        erro.setValorEsperado("8.0 ou 11.2");
+        $contexto.getErros().add(erro);
+        insert(erro);
+end
+
+rule "Base FGTS inconsistente"
+    when
+        $dados: DadosFolhaDTO( baseFGTS > salarioBruto )
+        $contexto: ValidacaoContexto()
+    then
+        ValidacaoErroDTO erro = new ValidacaoErroDTO();
+        erro.setTipoErro("BASE_FGTS");
+        erro.setDescricao("Base de cálculo do FGTS maior que salário bruto");
+        erro.setSeveridade("ALTA");
+        erro.setCampo("baseFGTS");
+        erro.setValorEncontrado($dados.getBaseFGTS());
+        erro.setValorEsperado("<= " + $dados.getSalarioBruto());
+        $contexto.getErros().add(erro);
+        insert(erro);
+end
+
+rule "Múltiplos vínculos ativos"
+    when
+        $dados: DadosFolhaDTO( vinculosAtivos != null, vinculosAtivos.size() > 1 )
+        $contexto: ValidacaoContexto()
+    then
+        ValidacaoErroDTO erro = new ValidacaoErroDTO();
+        erro.setTipoErro("MULTIPLOS_VINCULOS");
+        erro.setDescricao("Trabalhador possui múltiplos vínculos ativos");
+        erro.setSeveridade("MEDIA");
+        erro.setCampo("vinculosAtivos");
+        erro.setValorEncontrado($dados.getVinculosAtivos().size());
+        erro.setValorEsperado("1");
+        $contexto.getErros().add(erro);
+        insert(erro);
+end
+
+rule "IRRF sem dependentes declarados"
+    when
+        $dados: DadosFolhaDTO( baseIRRF > 0, dependentes == 0 )
+        $contexto: ValidacaoContexto()
+    then
+        ValidacaoErroDTO erro = new ValidacaoErroDTO();
+        erro.setTipoErro("DEPENDENTES_IRRF");
+        erro.setDescricao("Base IRRF positiva sem dependentes declarados - verificar deduções");
+        erro.setSeveridade("BAIXA");
+        erro.setCampo("dependente s");
+        erro.setValorEncontrado(0);
+        erro.setValorEsperado("> 0 (possível)");
+        $contexto.getErros().add(erro);
+        insert(erro);
+end
+
+rule "Competência fora do período atual"
+    when
+        $dados: DadosFolhaDTO( competencia != null )
+        $contexto: ValidacaoContexto()
+        eval($dados.getCompetencia().isBefore(java.time.LocalDate.now().minusMonths(1)))
+    then
+        ValidacaoErroDTO erro = new ValidacaoErroDTO();
+        erro.setTipoErro("COMPETENCIA_ATRASADA");
+        erro.setDescricao("Competência da folha está atrasada (> 1 mês)");
+        erro.setSeveridade("MEDIA");
+        erro.setCampo("competencia");
+        erro.setValorEncontrado($dados.getCompetencia());
+        erro.setValorEsperado(">= " + java.time.LocalDate.now().minusMonths(1));
+        $contexto.getErros().add(erro);
+        insert(erro);
+end
