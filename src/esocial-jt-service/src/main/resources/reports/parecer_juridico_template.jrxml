@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" name="parecer_juridico_template" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+    <import value="br.jus.tst.esocialjt.dashboard.DashboardHistoricoApuracaoDTO"/>
+    <parameter name="PERIODO_INICIO" class="java.lang.String"/>
+    <parameter name="PERIODO_FIM" class="java.lang.String"/>
+    <parameter name="TENANT" class="java.lang.String"/>
+    <parameter name="DATA_EMISSAO" class="java.lang.String"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="competencia" class="java.lang.String"/>
+    <field name="totalEventos" class="java.lang.Long"/>
+    <field name="baseFGTS" class="java.math.BigDecimal"/>
+    <field name="baseIRRF" class="java.math.BigDecimal"/>
+    <field name="valorLiquido" class="java.math.BigDecimal"/>
+    <background>
+        <band height="50" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="0" width="555" height="50"/>
+                <graphicElement>
+                    <pen lineWidth="0.5"/>
+                </graphicElement>
+            </line>
+        </band>
+    </background>
+    <pageHeader>
+        <band height="70">
+            <staticText>
+                <reportElement x="0" y="10" width="555" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Relatrio de Apurao - eSocial]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="45" width="555" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[Tenant: ]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="70" y="45" width="200" height="20"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{TENANT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band height="30">
+            <staticText>
+                <reportElement x="0" y="5" width="100" height="20"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Competncia]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="100" y="5" width="80" height="20"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Eventos]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="5" width="120" height="20"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Base FGTS]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="300" y="5" width="120" height="20"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Base IRRF]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="420" y="5" width="120" height="20"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Lquido]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="25">
+            <textField>
+                <reportElement x="0" y="5" width="100" height="20"/>
+                <textElement/>
+                <textFieldExpression><![CDATA[$F{competencia}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="100" y="5" width="80" height="20"/>
+                <textElement/>
+                <textFieldExpression><![CDATA[$F{totalEventos}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="180" y="5" width="120" height="20"/>
+                <textElement>
+                    <pattern pattern="#,##0.00"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{baseFGTS}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="300" y="5" width="120" height="20"/>
+                <textElement>
+                    <pattern pattern="#,##0.00"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{baseIRRF}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="420" y="5" width="120" height="20"/>
+                <textElement>
+                    <pattern pattern="#,##0.00"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{valorLiquido}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="30">
+            <line>
+                <reportElement x="0" y="0" width="555" height="1"/>
+            </line>
+        </band>
+    </columnFooter>
+    <pageFooter>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="400" height="20"/>
+                <textElement>
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Perodo: ]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="50" y="0" width="150" height="20"/>
+                <textElement>
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{PERIODO_INICIO}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="200" y="0" width="20" height="20"/>
+                <textElement>
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[at]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="220" y="0" width="150" height="20"/>
+                <textElement>
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{PERIODO_FIM}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="400" y="0" width="155" height="20"/>
+                <textElement textAlignment="Right">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Emisso: " + $P{DATA_EMISSAO}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>
