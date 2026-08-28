@@ -1,0 +1,56 @@
+{
+  "versao": "1.0.0",
+  "ultima_atualizacao": "2024-05-20",
+  "erros": [
+    {
+      "codigo": "501",
+      "tipo": "VALIDACAO_GERAL",
+      "mensagem_original": "Certificado digital inválido ou vencido",
+      "explicacao": "O certificado digital utilizado para assinar os eventos está vencido ou não foi reconhecido pelo sistema.",
+      "causa_provavel": "Data de validade do certificado expirada ou arquivo .pfx corrompido.",
+      "solucao": "1. Acesse o menu 'Configurações > Certificados'.\n2. Verifique a data de validade.\n3. Faça o upload do novo arquivo .pfx renovado.\n4. Reinicie o serviço de envio.",
+      "nivel_severidade": "CRITICO",
+      "tags": ["certificado", "seguranca", "bloqueante"]
+    },
+    {
+      "codigo": "402",
+      "tipo": "EVENTO_TABELA",
+      "mensagem_original": "Evento de tabela não encontrado para a identificação informada",
+      "explicacao": "Você está tentando enviar um evento periódico (ex: S-1200) vinculando-o a um evento de tabela (ex: S-1000 ou S-2200) que o eSocial não conhece.",
+      "causa_provavel": "O evento de origem (como uma Admissão S-2200) ainda não foi processado pelo eSocial ou foi enviado com dados divergentes.",
+      "solucao": "1. Vá para a fila de eventos.\n2. Filtre por eventos de tabela (S-1000, S-1005, S-2200).\n3. Garanta que todos estejam com status 'Processado com Sucesso'.\n4. Só então reenvie o evento periódico.",
+      "nivel_severidade": "ALTO",
+      "tags": ["ordem_envio", "dependencia", "tabela"]
+    },
+    {
+      "codigo": "488",
+      "tipo": "PERIODICO",
+      "mensagem_original": "Valor da remuneração inferior ao salário mínimo",
+      "explicacao": "O valor informado no evento de remuneração (S-1200/S-2300) é menor que o salário mínimo vigente na competência.",
+      "causa_provavel": "Erro de digitação no valor da folha ou configuração incorreta do salário contratual.",
+      "solucao": "1. Verifique o salário mínimo vigente para a competência (ex: R$ 1.412,00 em 2024).\n2. Corrija o valor no seu sistema de folha de pagamento.\n3. Gere um novo arquivo JSON/XML.\n4. Reenvie o evento.",
+      "nivel_severidade": "MEDIO",
+      "tags": ["folha", "salario_minimo", "valores"]
+    },
+    {
+      "codigo": "612",
+      "tipo": "CADASTRAL",
+      "mensagem_original": "CPF inválido ou não existente na Receita Federal",
+      "explicacao": "O CPF do trabalhador informado não passou na validação de dígitos ou não consta na base da Receita Federal.",
+      "causa_provavel": "Erro de digitação no CPF ou situação cadastral do trabalhador irregular (pendente de regularização).",
+      "solucao": "1. Confirme a digitação do CPF no cadastro do trabalhador.\n2. Peça ao trabalhador para verificar a situação dele no site da Receita Federal.\n3. Se o CPF estiver correto, aguarde a regularização junto à RFB antes de enviar.",
+      "nivel_severidade": "ALTO",
+      "tags": ["cpf", "trabalhador", "receita_federal"]
+    },
+    {
+      "codigo": "REJEICAO_LOTE",
+      "tipo": "INFRA",
+      "mensagem_original": "Erro de conexão com o serviço do eSocial",
+      "explicacao": "Não foi possível estabelecer comunicação com os servidores do eSocial no momento do envio.",
+      "causa_provavel": "Instabilidade temporária no eSocial ou bloqueio de firewall na sua rede.",
+      "solucao": "O sistema tentará reenviar automaticamente em 5 minutos. Se o erro persistir por mais de 1 hora, verifique se a porta 443 está liberada no seu firewall.",
+      "nivel_severidade": "BAIXO",
+      "tags": ["conexao", "infra", "retry"]
+    }
+  ]
+}
