@@ -1,4 +1,1 @@
-```
-# Documentation
-MANUAL_USUARIO_COMPLETO.md
-```
+Nothing needs to be added to .gitignore since only a markdown file (PLANO_IMPLEMENTACAO_PREMIUM_2.0.md) was added, which is a source/config file and should not be ignored.
