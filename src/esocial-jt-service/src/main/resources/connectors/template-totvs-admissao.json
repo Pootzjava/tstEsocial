@@ -1,0 +1,60 @@
+{
+  "nome": "Conector TOTVS Protheus - Admissão",
+  "sistemaOrigem": "TOTVS_PROTHEUS",
+  "sistemaDestino": "ESOCIAL_JT",
+  "descricao": "Mapeia evento de admissão (S-2200) do TOTVS para o formato eSocial-JT",
+  "mapeamentoCampos": [
+    {
+      "origem": "funcionario.matricula",
+      "destino": "cpfTrabalhador"
+    },
+    {
+      "origem": "funcionario.nomeCompleto",
+      "destino": "nmTrab"
+    },
+    {
+      "origem": "funcionario.dataNascimento",
+      "destino": "dtNascto"
+    },
+    {
+      "origem": "vinculo.dataAdmissao",
+      "destino": "dtAdm"
+    },
+    {
+      "origem": "vinculo.cargo.codigo",
+      "destino": "codCargo"
+    },
+    {
+      "origem": "vinculo.salario.base",
+      "destino": "remuneração.valor"
+    },
+    {
+      "origem": "endereco.cep",
+      "destino": "endereco.cep"
+    },
+    {
+      "origem": "endereco.logradouro",
+      "destino": "endereco.lograd"
+    },
+    {
+      "origem": "endereco.numero",
+      "destino": "endereco.nrlogr"
+    }
+  ],
+  "transformacoes": [
+    {
+      "campo": "cpfTrabalhador",
+      "tipo": "DEFAULT_IF_NULL",
+      "valor": "00000000000"
+    },
+    {
+      "campo": "nmTrab",
+      "tipo": "UPPER"
+    },
+    {
+      "campo": "dtAdm",
+      "tipo": "DATE_FORMAT",
+      "formato": "YYYY-MM-DD"
+    }
+  ]
+}

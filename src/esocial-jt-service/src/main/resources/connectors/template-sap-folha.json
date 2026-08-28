@@ -1,0 +1,39 @@
+{
+  "nome": "Conector SAP RH - Folha de Pagamento",
+  "sistemaOrigem": "SAP_RH",
+  "sistemaDestino": "ESOCIAL_JT",
+  "descricao": "Mapeia eventos periódicos S-1200 da folha SAP para eSocial",
+  "mapeamentoCampos": [
+    {
+      "origem": "employee.id",
+      "destino": "cpfTrabalhador"
+    },
+    {
+      "origem": "employee.name",
+      "destino": "nome"
+    },
+    {
+      "origem": "payroll.period",
+      "destino": "competencia"
+    },
+    {
+      "origem": "payroll.grossSalary",
+      "destino": "remunPerNat[0].valor"
+    },
+    {
+      "origem": "payroll.overtime",
+      "destino": "remunPerNat[1].valor"
+    },
+    {
+      "origem": "payroll.discountINSS",
+      "destino": "infoDescontos[0].valor"
+    }
+  ],
+  "transformacoes": [
+    {
+      "campo": "competencia",
+      "tipo": "DATE_FORMAT",
+      "formato": "YYYY-MM"
+    }
+  ]
+}
