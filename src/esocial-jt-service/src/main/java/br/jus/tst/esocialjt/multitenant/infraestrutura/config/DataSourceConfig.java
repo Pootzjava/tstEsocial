@@ -27,7 +27,7 @@ import java.util.Map;
  * 
  * @author Analista de Sistemas Sênior - Especialista eSocial
  */
-@Configuration
+@Configuration("multitenantDataSourceConfig")
 public class DataSourceConfig {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceConfig.class);

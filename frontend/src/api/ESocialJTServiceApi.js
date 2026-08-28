@@ -142,3 +142,46 @@ export function useExemploOcorrencia(tipo) {
     enabled: !!tipo
   });
 }
+
+export function useDashboardTotais() {
+  return useQuery(`/dashboard/totais`, queryFetcher, {
+    refetchInterval: REFRESH_INTERVAL,
+    enabled: true
+  });
+}
+
+export function useDashboardHistoricoApuracao(periodoInicio, periodoFim) {
+  const params = new URLSearchParams();
+  if (periodoInicio) params.append('inicio', periodoInicio);
+  if (periodoFim) params.append('fim', periodoFim);
+  
+  const queryString = params.toString();
+  const url = `/dashboard/historico-apuracao${queryString ? '?' + queryString : ''}`;
+  
+  return useQuery(url, queryFetcher, {
+    refetchInterval: REFRESH_INTERVAL * 2,
+    enabled: true
+  });
+}
+
+export function useUltimosEventos(page = 0, periodoInicio, periodoFim) {
+  const params = new URLSearchParams();
+  params.append('page', page);
+  params.append('size', '10');
+  params.append('estados', '');
+  params.append('expressao', '');
+  params.append('tipos', '');
+  params.append('incluirArquivados', 'false');
+  params.append('cpf', '');
+  params.append('periodoApuracao', '');
+  if (periodoInicio) params.append('dataInicio', periodoInicio);
+  if (periodoFim) params.append('dataFim', periodoFim);
+  
+  const queryString = params.toString();
+  const url = `/ocorrencias/paginado?${queryString}`;
+  
+  return useQuery(url, queryFetcher, {
+    refetchInterval: REFRESH_INTERVAL,
+    enabled: true
+  });
+}

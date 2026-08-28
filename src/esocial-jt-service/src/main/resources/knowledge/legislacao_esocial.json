@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "lastUpdate": "2024-05-20",
+  "knowledgeBase": [
+    {
+      "id": "LEG-001",
+      "topic": "Prazos de Envio - Eventos Periódicos",
+      "question": "Qual o prazo para envio dos eventos periódicos?",
+      "answer": "Os eventos periódicos devem ser enviados até o dia 15 do mês seguinte ao da ocorrência dos fatos. Se o dia 15 cair em fim de semana ou feriado, antecipa-se para o dia útil anterior.",
+      "legalBasis": "Art. 14 da IN RFB/PGE nº 1.950/2020",
+      "tags": ["prazo", "eventos periódicos", "s-1200", "vencimento"],
+      "severity": "HIGH"
+    },
+    {
+      "id": "LEG-002",
+      "topic": "Prazos de Envio - Admissão (S-2200)",
+      "question": "Qual o prazo para enviar o evento S-2200 (Admissão)?",
+      "answer": "O evento S-2200 deve ser enviado até o dia 7 do mês seguinte ao da admissão. Para trabalhadores avulsos e intermitentes, o prazo é até 2 dias antes do início da prestação do serviço.",
+      "legalBasis": "Art. 12 da IN RFB/PGE nº 1.950/2020",
+      "tags": ["admissão", "s-2200", "prazo", "cadastro"],
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "LEG-003",
+      "topic": "Multas por Atraso",
+      "question": "Qual o valor da multa por atraso no envio?",
+      "answer": "A multa varia conforme o tamanho da empresa: R$ 50,00 (Micro/Pequena), R$ 75,00 (Média) e R$ 100,00 (Grande) por evento atrasado. O limite máximo é de R$ 3.000,00 por mês.",
+      "legalBasis": "Art. 22 da Lei 8.218/1991 e Art. 43 da IN 1.950/2020",
+      "tags": ["multa", "atraso", "penalidade", "valores"],
+      "severity": "HIGH"
+    },
+    {
+      "id": "LEG-004",
+      "topic": "Rubricas Salariais",
+      "question": "Como devo cadastrar horas extras na tabela de rubricas?",
+      "answer": "Horas extras devem ser cadastradas na Tabela de Rubricas (S-1010) com o código de incidência tributária adequado (ex: 01 para tributação plena). É obrigatório informar a natureza jurídica correspondente.",
+      "legalBasis": "Manual de Orientação do eSocial (MOE) - Tabela 3",
+      "tags": ["rubricas", "horas extras", "s-1010", "tributação"],
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "LEG-005",
+      "topic": "Retificação de Eventos",
+      "question": "Posso retificar um evento já enviado?",
+      "answer": "Sim, eventos podem ser retificados a qualquer tempo, desde que não tenham sido processados na DCTFWeb ou que o período de apuração não tenha sido fechado. Utiliza-se o mesmo tipo de evento com a indicação de retificação.",
+      "legalBasis": "Art. 18 da IN RFB/PGE nº 1.950/2020",
+      "tags": ["retificação", "correção", "alteração"],
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "LEG-006",
+      "topic": "Exclusão de Eventos",
+      "question": "Quando posso excluir um evento?",
+      "answer": "A exclusão só é permitida se o evento estiver com status 'Processado com Sucesso' e ainda não tiver gerado impacto na DCTFWeb definitiva. Eventos com erro não precisam ser excluídos, apenas corrigidos via retificação ou novo envio.",
+      "legalBasis": "Capítulo V do Manual de Orientação do eSocial",
+      "tags": ["exclusão", "cancelamento", "erro"],
+      "severity": "HIGH"
+    },
+    {
+      "id": "LEG-007",
+      "topic": "Salário Mínimo Vigente",
+      "question": "Qual o salário mínimo vigente para 2024?",
+      "answer": "O salário mínimo nacional vigente em 2024 é de R$ 1.412,00. Estados como SP, PR, RS, SC e RJ possuem pisos regionais superiores que devem ser observados para suas categorias.",
+      "legalBasis": "Lei nº 14.754/2023",
+      "tags": ["salário mínimo", "remuneração", "validação"],
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "LEG-008",
+      "topic": "FGTS sobre Rescisão",
+      "question": "Qual a alíquota do FGTS em caso de demissão sem justa causa?",
+      "answer": "A alíquota do FGTS é de 8% sobre a remuneração mensal. Em caso de demissão sem justa causa, há também a multa rescisória de 40% sobre o saldo total da conta vinculada do trabalhador.",
+      "legalBasis": "Art. 15 da Lei 8.036/1990",
+      "tags": ["fgts", "rescisão", "multa", "alíquota"],
+      "severity": "HIGH"
+    }
+  ]
+}

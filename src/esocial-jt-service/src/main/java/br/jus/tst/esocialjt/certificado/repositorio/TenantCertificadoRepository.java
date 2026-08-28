@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -172,6 +173,61 @@ public class TenantCertificadoRepository {
     /**
      * RowMapper para converter ResultSet em TenantCertificadoDTO.
      */
+
+    /**
+     * Busca todos os certificados de um tenant ordenados por data de criação.
+     * 
+     * @param tenantId identificador do tenant
+     * @return lista de certificados
+     */
+    public List<TenantCertificadoDTO> findAllByTenantId(String tenantId) {
+        String sql = """
+            SELECT 
+                id, tenant_id, conteudo_certificado, senha_certificado,
+                tipo_certificado, alias_certificado, caminho_arquivo,
+                caminho_cacerts, senha_cacerts, data_validade, ativo
+            FROM tenant_certificado
+            WHERE tenant_id = ?
+            ORDER BY criado_em DESC
+            """;
+        
+        try {
+            return jdbcTemplate.query(sql, new TenantCertificadoRowMapper(), tenantId);
+        } catch (Exception e) {
+            LOGGER.debug("Nenhum certificado encontrado para tenant {}: {}", tenantId, e.getMessage());
+            return List.of();
+        }
+    }
+
+    /**
+     * Busca certificado por ID.
+     * 
+     * @param id identificador do registro
+     * @return Optional contendo o certificado ou vazio se não encontrado
+     */
+    public Optional<TenantCertificadoDTO> findById(Long id) {
+        String sql = """
+            SELECT 
+                id, tenant_id, conteudo_certificado, senha_certificado,
+                tipo_certificado, alias_certificado, caminho_arquivo,
+                caminho_cacerts, senha_cacerts, data_validade, ativo
+            FROM tenant_certificado
+            WHERE id = ?
+            """;
+        
+        try {
+            TenantCertificadoDTO dto = jdbcTemplate.queryForObject(
+                sql,
+                new TenantCertificadoRowMapper(),
+                id
+            );
+            return Optional.ofNullable(dto);
+        } catch (Exception e) {
+            LOGGER.debug("Nenhum certificado encontrado para ID {}: {}", id, e.getMessage());
+            return Optional.empty();
+        }
+    }
+
     private static class TenantCertificadoRowMapper implements RowMapper<TenantCertificadoDTO> {
         
         @Override
@@ -187,7 +243,20 @@ public class TenantCertificadoRepository {
             dto.setCaminhoArquivo(rs.getString("caminho_arquivo"));
             dto.setCaminhoCacerts(rs.getString("caminho_cacerts"));
             dto.setSenhaCacerts(rs.getString("senha_cacerts"));
-            dto.setDataValidade(rs.getString("data_validade"));
+            
+            // Converte String para LocalDateTime
+            String dataValidadeStr = rs.getString("data_validade");
+            if (dataValidadeStr != null && !dataValidadeStr.isEmpty()) {
+                try {
+                    java.time.LocalDateTime dataValidade = java.time.LocalDateTime.parse(dataValidadeStr);
+                    dto.setDataValidade(dataValidade);
+                } catch (Exception e) {
+                    // Se falhar o parse, mantém null
+                    dto.setDataValidade(null);
+                }
+            }
+            
+            dto.setNumeroSerie(rs.getString("numero_serie"));
             dto.setAtivo(rs.getBoolean("ativo"));
             
             return dto;

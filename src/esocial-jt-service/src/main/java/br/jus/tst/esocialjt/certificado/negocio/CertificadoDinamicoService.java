@@ -127,4 +127,91 @@ public class CertificadoDinamicoService {
             return false;
         }
     }
+
+    /**
+     * Carrega o KeyStore com o certificado digital do tenant atual.
+     * 
+     * @return KeyStore configurado com o certificado do tenant
+     * @throws br.jus.tst.esocialjt.negocio.exception.BusinessException se não houver certificado ativo ou falha no carregamento
+     */
+    public KeyStore loadKeyStoreForCurrentTenant() {
+        String tenantId = tenantContext.getTenantId();
+        
+        if (tenantId == null || tenantId.isEmpty()) {
+            throw new br.jus.tst.esocialjt.negocio.exception.BusinessException(
+                "TENANT_NAO_IDENTIFICADO", 
+                "Não foi possível identificar o tenant na requisição. Verifique o header X-Tenant-ID."
+            );
+        }
+
+        TenantCertificadoDTO certDTO = buscarCertificadoDoTenant(tenantId);
+        
+        if (certDTO == null || !certDTO.temCertificadoValido()) {
+            throw new br.jus.tst.esocialjt.negocio.exception.BusinessException(
+                "CERTIFICADO_NAO_ENCONTRADO", 
+                "Seu certificado digital não foi localizado ou está inativo. Contate o administrador do sistema."
+            );
+        }
+
+        // Verifica validade
+        if (certDTO.getDataValidade() != null && certDTO.getDataValidade().isBefore(java.time.LocalDateTime.now())) {
+            throw new br.jus.tst.esocialjt.negocio.exception.BusinessException(
+                "CERTIFICADO_VENCIDO", 
+                "Seu certificado digital está vencido desde " + formatarData(certDTO.getDataValidade()) + 
+                ". Renove seu certificado e atualize no sistema."
+            );
+        }
+
+        try {
+            KeyStore ks = KeyStore.getInstance("PKCS12");
+            String senhaPlana = certDTO.getSenhaCertificado();
+            
+            try (InputStream stream = new ByteArrayInputStream(certDTO.getConteudoCertificado())) {
+                ks.load(stream, senhaPlana.toCharArray());
+            }
+
+            return ks;
+            
+        } catch (Exception e) {
+            throw new br.jus.tst.esocialjt.negocio.exception.BusinessException(
+                "ERRO_CARREGAMENTO_CERT", 
+                "Falha ao carregar o certificado digital. Verifique se o arquivo está íntegro e a senha está correta."
+            );
+        }
+    }
+
+    /**
+     * Busca informações do certificado do tenant atual sem carregar o KeyStore.
+     * 
+     * @return DTO com informações do certificado
+     */
+    public TenantCertificadoDTO getCertificadoInfo() {
+        String tenantId = tenantContext.getTenantId();
+        
+        if (tenantId == null) {
+            throw new br.jus.tst.esocialjt.negocio.exception.BusinessException(
+                "TENANT_NAO_IDENTIFICADO", 
+                "Não foi possível identificar o tenant na requisição."
+            );
+        }
+
+        return buscarCertificadoDoTenant(tenantId);
+    }
+
+    /**
+     * Verifica se o tenant possui certificado ativo configurado.
+     * 
+     * @param tenantId identificador do tenant
+     * @return true se possuir certificado ativo
+     */
+    public boolean possuiCertificadoAtivo(String tenantId) {
+        return tenantPossuiCertificadoValido(tenantId);
+    }
+
+    private String formatarData(java.time.LocalDateTime data) {
+        if (data == null) {
+            return null;
+        }
+        return data.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+    }
 }

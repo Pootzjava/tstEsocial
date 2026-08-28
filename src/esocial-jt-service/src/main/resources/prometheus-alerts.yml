@@ -1,0 +1,68 @@
+groups:
+  - name: esocial-alerts
+    interval: 1m
+    rules:
+      # Alerta de alta taxa de erros (>10% em 5 minutos)
+      - alert: HighErrorRate
+        expr: |
+          (sum(rate(esocial_eventos_processados_total{estado="ERRO"}[5m])) 
+          / sum(rate(esocial_eventos_processados_total[5m]))) > 0.10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alta taxa de erros no processamento de eventos eSocial"
+          description: "Taxa de erros atual: {{ $value | humanizePercentage }} nos últimos 5 minutos"
+
+      # Alerta de processamento lento (tempo médio >30s)
+      - alert: SlowProcessing
+        expr: |
+          histogram_quantile(0.95, sum(rate(esocial_tempo_processamento_segundos_bucket[5m])) by (le)) > 30
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Processamento lento de eventos eSocial"
+          description: "Tempo P95 atual: {{ $value }} segundos"
+
+      # Alerta de baixo cache hit ratio (<50%)
+      - alert: LowCacheHitRatio
+        expr: esocial_cache_hit_ratio < 0.50
+        for: 10m
+        labels:
+          severity: info
+        annotations:
+          summary: "Baixa eficiência do cache"
+          description: "Cache hit ratio atual: {{ $value | humanizePercentage }}"
+
+      # Alerta de pico de validações de folha (>20 em 10min)
+      - alert: ValidationSpike
+        expr: |
+          increase(esocial_validacoes_folha_total[10m]) > 20
+        for: 0m
+        labels:
+          severity: info
+        annotations:
+          summary: "Pico de validações de folha de pagamento"
+          description: "{{ $value }} validações nos últimos 10 minutos"
+
+      # Alerta de certificados vencendo
+      - alert: CertificatesExpiringSoon
+        expr: esocial_certificados_vencendo_soon > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Certificados digitais próximos do vencimento"
+          description: "{{ $value }} certificado(s) vencendo em menos de 30 dias"
+
+      # Alerta de fila crescente
+      - alert: GrowingQueue
+        expr: |
+          delta(esocial_eventos_fila_count[15m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Fila de eventos crescendo rapidamente"
+          description: "Aumento de {{ $value }} eventos na fila nos últimos 15 minutos"

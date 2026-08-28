@@ -254,6 +254,6 @@ public class ApuracaoParserService {
      * Usado pelo DashboardServico para popular os valores reais
      */
     public List<ApuracaoEsocial> buscarPorCompetencia(LocalDate competenciaInicio, LocalDate competenciaFim) {
-        return apuracaoRepository.findByCompetenciaBetween(competenciaInicio, competenciaFim);
+        return apuracaoRepository.findByCompetenciaBetweenOrderByCompetenciaDesc(competenciaInicio, competenciaFim);
     }
 }

@@ -1,0 +1,66 @@
+/**
+ * Regras Drools para priorização de eventos do eSocial
+ * 
+ * Prioridades:
+ * - CRITICA (1): Prazos legais < 24h ou múltiplas falhas
+ * - ALTA (2): Admissões, demissões, alterações contratuais
+ * - MEDIA (3): Eventos periódicos de folha
+ * - BAIXA (4): Eventos cadastrais rotineiros
+ */
+
+rule "Evento com múltiplas falhas é crítico"
+    when
+        $evento: EventoFilaDTO( tentativasProcessamento >= 5 )
+    then
+        $evento.setPrioridade(PrioridadeEvento.CRITICA);
+        insert($evento);
+end
+
+rule "Admissão tem prioridade alta"
+    when
+        $evento: EventoFilaDTO( tipoEvento == "S-2200" )
+    then
+        $evento.setPrioridade(PrioridadeEvento.ALTA);
+        insert($evento);
+end
+
+rule "Demissão tem prioridade alta"
+    when
+        $evento: EventoFilaDTO( tipoEvento == "S-2299" || tipoEvento == "S-2300" )
+    then
+        $evento.setPrioridade(PrioridadeEvento.ALTA);
+        insert($evento);
+end
+
+rule "Eventos de folha têm prioridade média"
+    when
+        $evento: EventoFilaDTO( 
+            tipoEvento matches "S-1200|S-1202|S-1207|S-1280|S-2299|S-2300" 
+        )
+    then
+        $evento.setPrioridade(PrioridadeEvento.MEDIA);
+        insert($evento);
+end
+
+rule "Eventos cadastrais têm prioridade baixa"
+    when
+        $evento: EventoFilaDTO( 
+            tipoEvento matches "S-1000|S-1010|S-1020|S-1030|S-1035|S-1040" 
+        )
+    then
+        $evento.setPrioridade(PrioridadeEvento.BAIXA);
+        insert($evento);
+end
+
+rule "Reavalia prioridade após 3 tentativas"
+    when
+        $evento: EventoFilaDTO( 
+            tentativasProcessamento >= 3,
+            prioridade != PrioridadeEvento.CRITICA
+        )
+    then
+        if ($evento.getPrioridade().getNivel() > PrioridadeEvento.ALTA.getNivel()) {
+            $evento.setPrioridade(PrioridadeEvento.ALTA);
+        }
+        insert($evento);
+end
