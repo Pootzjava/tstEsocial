@@ -1,27 +1,24 @@
 ```
-# Compiled and build artifacts
-*.class
-*.o
-*.obj
-*.out
-*.dll
-*.so
-*.a
-*.pyc
-__pycache__/
-
 # Dependencies
 node_modules/
-venv/
-.venv/
-target/
-.gradle/
-.mypy_cache/
-.pytest_cache/
 
-# Build directories
+# Build artifacts
 dist/
 build/
+target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py.class
+.Python
+venv/
+.venv/
+.env
+.env.local
+.env.*
 
 # Editors
 .vscode/
@@ -29,26 +26,27 @@ build/
 *.swp
 *.swo
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
 
-# System files
+# OS
 .DS_Store
 Thumbs.db
-
-# Environment
-.env
-.env.local
-*.env.*
 
 # Coverage
 coverage/
 htmlcov/
 .coverage
 
-# Java/Maven specific
-*.jar
-*.war
-*.ear
+# Temp files
+*.tmp
+
+# Gradle
+.gradle/
+
+# MyPy
+.mypy_cache/
+
+# Pytest
+.pytest_cache/
 ```
